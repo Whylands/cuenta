@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173e36">
+  <meta name="description" content="Calcula guías, OT, facturas, boletas y notas de crédito para un período desde y hasta. Descuenta lo ya pagado y descarga el resumen en Excel.">
+  <title>Cuenta local · Guías, OT, facturas, boletas y notas de crédito</title>
+  <style>
+    :root{--bg:#f5f6f2;--paper:#fff;--ink:#233d36;--muted:#697770;--line:#e4e8e1;--green:#25634f;--lime:#d7edab;--red:#ad3d36;--sans:Inter,"Segoe UI",Arial,sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:default}svg{display:block;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}button,a,input{touch-action:manipulation}button:focus-visible,a:focus-visible{outline:3px solid #7c9d45;outline-offset:4px}a{color:inherit}.page{max-width:1120px;margin:auto;padding:0 32px}.topbar{height:94px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:750;letter-spacing:-1px}.brandmark{background:var(--green);color:#fff;border-radius:11px;width:36px;height:36px;display:grid;place-items:center}.brandmark svg{width:23px;height:23px}.topnote{font-size:12px;font-weight:650;letter-spacing:1.4px;color:var(--muted)}.hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:49px 0 34px}.eyebrow{font-size:11px;font-weight:750;letter-spacing:1.9px;color:var(--green);margin:0 0 12px}.hero h1{font-size:clamp(29px,3.5vw,41px);line-height:1.14;font-weight:650;letter-spacing:-1.6px;margin:0 0 13px}.hero p{font-size:14px;line-height:1.7;color:var(--muted);margin:0}.rate{flex-shrink:0;display:flex;align-items:center;gap:13px;background:#eaf0e2;border:1px solid #dde6d1;padding:15px 19px;border-radius:16px}.rate svg{width:25px;height:25px;color:var(--green)}.rate strong{font-size:22px;font-weight:700;letter-spacing:-.7px}.rate span{display:block;font-size:11px;color:#5f7158;margin-top:4px}.layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:start}.input-card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:27px 28px 24px;box-shadow:0 3px 7px #1b3f3103}.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.section-head h2{margin:0;font-size:19px;font-weight:650;letter-spacing:-.4px}.section-head p{margin:7px 0 0;font-size:12px;line-height:1.65;color:var(--muted)}.step{font-size:11px;color:#78847a;background:#f4f5f1;border-radius:7px;padding:5px 8px;white-space:nowrap}.counter-group{border:0;padding:0;margin:28px 0 0;min-width:0}.counter-group+.counter-group{border-top:1px solid var(--line);padding-top:26px;margin-top:24px}.group-heading{display:flex;align-items:center;gap:10px;margin-bottom:18px}.group-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#f0f3eb;color:#487449}.group-icon.blue{background:#edf1f8;color:#557b9d}.group-heading h3{font-size:15px;margin:0;font-weight:650}.group-heading p{font-size:11px;color:var(--muted);margin:4px 0 0}.count-pill{margin-left:auto;background:#f3f5ef;border-radius:7px;padding:6px 9px;font-size:11px;white-space:nowrap}.count-pill b{font-size:13px;font-weight:700}.fields{display:grid;grid-template-columns:1fr 20px 1fr;gap:10px;align-items:start}.field label{display:block;font-size:12px;font-weight:550;color:#5d6d64;margin-bottom:9px}.field input{width:100%;min-width:0;appearance:textfield;-moz-appearance:textfield;background:#fafbf8;border:1px solid #dfe5dc;border-radius:10px;height:54px;padding:10px 14px;color:var(--ink);font-size:21px;font-weight:550;font-variant-numeric:tabular-nums;outline:none;transition:border-color .15s,box-shadow .15s}.field input::-webkit-inner-spin-button,.field input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.field input:focus{border-color:#609677;box-shadow:0 0 0 3px #60967720;background:#fff}.field input[aria-invalid=true]{border-color:#c9776f;background:#fffafa}.field-error{font-size:11px;color:var(--red);line-height:1.45;margin:7px 0 0}.field-error:empty{display:none}.arrow{margin-top:39px;color:#87948a}.arrow svg{width:18px;height:18px}.mode-fieldset{border:0;padding:0;margin:27px 0 0;min-width:0}.mode-fieldset legend{font-size:12px;font-weight:600;margin-bottom:11px;padding:0}.modes{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mode{position:relative;display:block;cursor:pointer}.mode input{position:absolute;opacity:0;width:1px;height:1px}.mode-content{display:block;border:1px solid var(--line);border-radius:10px;padding:12px 11px 11px 31px;position:relative;transition:background .15s,border-color .15s}.mode-content:before{content:"";position:absolute;left:11px;top:15px;width:10px;height:10px;border:1.5px solid #a4afa3;border-radius:50%}.mode input:checked+.mode-content{background:#f1f6e9;border-color:#94b577}.mode input:checked+.mode-content:before{border-color:var(--green);background:var(--green);box-shadow:inset 0 0 0 2px #f1f6e9}.mode input:focus-visible+.mode-content{outline:3px solid #7c9d45;outline-offset:3px}.mode-content strong{font-size:12px;display:block;font-weight:650}.mode-content small{font-size:10px;display:block;color:var(--muted);margin-top:5px;line-height:1.4}.input-foot{margin-top:23px;display:flex;align-items:center;justify-content:space-between;gap:8px}.save-status{display:flex;align-items:center;gap:6px;font-size:10px;color:#7b867c;line-height:1.4}.save-status svg{height:13px;width:13px;flex-shrink:0}.text-button{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:#657468;padding:7px 0 7px 7px;font-size:11px;white-space:nowrap}.text-button:hover{color:var(--green)}.text-button svg{height:14px;width:14px}.summary{background:#173e36;color:#fff;border-radius:22px;padding:27px 28px 24px;position:relative;overflow:hidden}.summary-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.summary-head h2{font-size:13px;font-weight:500;margin:0;color:#d2dfd9}.summary-head svg{color:#a6bfb3;width:21px;height:21px}.amount-line{margin:19px 0 0;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}.amount{font-size:clamp(40px,4.9vw,59px);font-weight:600;letter-spacing:-2.5px;line-height:1.14;overflow-wrap:anywhere;max-width:100%;font-variant-numeric:tabular-nums}.currency{font-size:11px;color:#a3bcb0;letter-spacing:.7px}.pay-explanation{font-size:12px;color:#b4c9bf;margin:10px 0 27px;line-height:1.6;min-height:20px}.breakdown{border-top:1px solid #ffffff1e;padding-top:19px}.breakdown-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin:0 0 14px;gap:12px}.row-label{display:flex;align-items:center;gap:9px;color:#c3d4ca}.dot{width:7px;height:7px;border-radius:50%;background:#b9d99a;flex:none}.dot.blue{background:#94b4d5}.breakdown-row strong{font-weight:550;font-variant-numeric:tabular-nums}.total-row{padding-top:16px;margin-top:5px;border-top:1px dashed #ffffff28;margin-bottom:0}.total-row .row-label{color:#fff;font-weight:550}.total-row strong{font-size:25px;color:var(--lime);font-weight:650;letter-spacing:-.7px}.progress-box{margin-top:25px;padding:17px 17px 16px;background:#ffffff08;border:1px solid #ffffff15;border-radius:12px}.progress-heading{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:11px;color:#c5d7cd}.progress-heading b{font-size:11px;font-weight:550;color:#e1edda}.progress-track{height:6px;background:#ffffff15;border-radius:4px;overflow:hidden;margin:12px 0 10px}.progress-fill{height:100%;width:0;background:var(--lime);border-radius:4px;transition:width .25s ease}.progress-caption{font-size:10px;color:#a5bcb0;line-height:1.6;margin:0}.copy-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--lime);border:1px solid var(--lime);color:#254332;border-radius:10px;padding:13px;margin-top:22px;font-size:12px;font-weight:650;transition:background .15s,transform .15s}.copy-button:hover{background:#e2f3c3;transform:translateY(-1px)}.copy-button:disabled{opacity:.45;transform:none}.copy-button svg{width:16px;height:16px}.formula-note{padding:19px 6px 0;display:flex;align-items:flex-start;gap:10px}.formula-note svg{width:16px;height:16px;flex-shrink:0;color:#85967c;margin-top:1px}.formula-note h3{font-size:11px;margin:0 0 7px;font-weight:650;color:#637359}.formula-note p{font-size:11px;color:#788372;line-height:1.75;margin:0}.formula-note .formula{color:#576c4f;font-size:11px;margin-top:5px}.footer{padding:30px 0 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#8a9387;font-size:10px}.footer a{text-decoration:none;display:flex;gap:6px;align-items:center}.footer a:hover{color:var(--green)}.footer svg{width:13px;height:13px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,15px);padding:12px 19px;border-radius:10px;background:#283d32;color:#fff;font-size:12px;box-shadow:0 6px 30px #173e3626;z-index:10;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;text-align:center;max-width:90vw;width:max-content}.toast.show{opacity:1;transform:translate(-50%,0)}[hidden]{display:none!important}dialog{max-width:430px;width:calc(100% - 40px);border:1px solid var(--line);border-radius:18px;padding:25px;color:var(--ink);box-shadow:0 16px 80px #183e3626}dialog::backdrop{background:#173e3655;backdrop-filter:blur(3px)}dialog h2{font-size:20px;margin:0 0 11px}dialog p{font-size:13px;color:var(--muted);line-height:1.7}dialog .actions{display:flex;justify-content:flex-end;gap:9px;margin-top:23px}dialog button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 16px;font-size:12px;color:var(--ink)}dialog .confirm{background:var(--green);border-color:var(--green);color:#fff}dialog textarea{width:100%;min-height:190px;padding:12px;border:1px solid var(--line);border-radius:8px;font:12px/1.8 var(--sans);color:var(--ink);resize:vertical}
+    .payment-section{margin-top:24px;padding-top:21px;border-top:1px solid var(--line)}.payment-section label{font-size:13px;font-weight:650;color:var(--ink)}.payment-section .money-field{position:relative}.money-field>span{position:absolute;left:15px;top:16px;font-size:20px;color:#698372;pointer-events:none}.money-field input{padding-left:33px}.payment-help{font-size:11px;line-height:1.5;color:var(--muted);margin:8px 0 0}.settlement{margin:0 0 21px}.settlement .breakdown-row{margin-bottom:11px;font-size:12px}.overpayment{font-size:11px;line-height:1.6;color:#ffe1ae;background:#ffffff0b;border-radius:8px;padding:10px 12px;margin:14px 0 0}.summary-actions{display:grid;gap:9px;margin-top:22px}.summary-actions .copy-button{margin:0}.summary-actions .secondary-button{background:transparent;color:#d0e1d6;border-color:#ffffff2b}.summary-actions .secondary-button:hover{background:#ffffff09}.download-note{font-size:10px;color:#a6bfb2;text-align:center;margin:10px 0 0}
+    .cutoff-field{margin-top:22px;padding:15px;background:#f5f7f0;border:1px solid var(--line);border-radius:12px}.cutoff-field input{font-size:16px;color-scheme:light;background:#fff}.cutoff-field label{font-weight:650;color:var(--ink)}.cutoff-label{font-size:11px;color:#c1d5c7;margin:0 0 19px;padding-bottom:14px;border-bottom:1px solid #ffffff1e;line-height:1.6}.group-icon.amber{background:#fbf0df;color:#96763b}.group-icon.purple{background:#f2edf7;color:#8962a0}.dot.amber{background:#e4c484}.dot.purple{background:#c6a8dc}.group-icon.rose{background:#fbeceb;color:#a65a52}.dot.rose{background:#eba79f}.layout>aside{position:sticky;top:24px}
+    .period-title{font-size:13px;font-weight:650;margin:0 0 13px}.date-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.date-fields input{width:100%;min-width:0;padding:10px;font-size:14px}.date-fields label{font-size:12px}.cutoff-field .payment-help{margin-top:11px}
+    .stage-counter{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:18px 28px;background:#edf3e4;border:1px solid #dbe5d1;border-radius:18px;padding:24px 26px;margin-bottom:24px}.stage-counter .eyebrow{font-size:10px;margin-bottom:10px}.stage-counter h2{font-size:20px;line-height:1.4;letter-spacing:-.4px;max-width:520px;margin:0 0 9px}.stage-counter-info>p:not(.eyebrow){font-size:12px;line-height:1.6;color:var(--muted);margin:0}.stage-counter-info>p.stage-counter-help{font-size:11px;margin-top:10px;color:#4e6b4c}.stage-counter-controls{display:flex;align-items:center;gap:20px;min-width:0}.stage-counter-value{min-width:0;text-align:center}.stage-counter-value output{display:block;font-size:42px;line-height:1.15;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-1.5px;overflow-wrap:anywhere}.stage-counter-value>span{display:block;font-size:10px;line-height:1.5;color:var(--muted);margin-top:7px}.stage-counter-add{display:flex;align-items:center;justify-content:center;gap:8px;min-width:94px;min-height:56px;background:var(--green);color:#fff;border:1px solid var(--green);border-radius:12px;font-size:26px;font-weight:650;transition:background .15s,transform .15s}.stage-counter-add>span{font-size:12px;font-weight:500}.stage-counter-add:hover:not(:disabled){background:#1b513f;transform:translateY(-1px)}.stage-counter-add:disabled{opacity:.4}.stage-counter-note{grid-column:1/-1;font-size:10px;line-height:1.6;margin:0;color:var(--muted);padding-top:12px;border-top:1px solid #d6e2cb}.stage-counter>.field-error:empty{display:none}.stage-counter>.field-error{grid-column:1/-1;margin:0}
+    @media(max-width:620px){.stage-counter{grid-template-columns:1fr;padding:21px 19px;gap:17px}.stage-counter h2{font-size:19px}.stage-counter-controls{justify-content:space-between}.stage-counter-value{text-align:left}.stage-counter-value output{font-size:clamp(26px,7vw,42px)}.stage-counter-add{flex-shrink:0}.stage-counter-note{padding-top:12px}}
+    @media print{.stage-counter-add,.stage-counter-help{display:none!important}.stage-counter{break-inside:avoid}}
+    @media(max-width:360px){.date-fields{grid-template-columns:1fr}}
+    .access-bar{display:flex;align-items:center;justify-content:space-between;gap:18px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px 20px;margin-bottom:20px}.access-title{font-weight:650;font-size:13px;margin:0 0 7px}.update-text{font-size:11px;color:var(--muted);margin:0;line-height:1.7}.access-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.access-button{border:1px solid #dce5d4;border-radius:9px;padding:11px 14px;background:#edf3e4;color:var(--ink);font-size:12px;font-weight:600;white-space:nowrap}.access-button.primary{background:var(--green);border-color:var(--green);color:#fff}.access-button:disabled{opacity:.45}.access-hint{color:var(--muted);font-size:11px;line-height:1.7;margin:8px 0 0}.access-error{background:#fff1ed;border:1px solid #edc6bc;padding:12px 16px;border-radius:10px;color:#963e32;font-size:12px;line-height:1.7;margin:0 0 18px}.edit-fields{min-width:0;border:0;padding:0;margin:0}fieldset:disabled input{opacity:1;color:#233d36;-webkit-text-fill-color:#233d36;background:#f0f3ed}.login-input{width:100%;height:46px;border:1px solid #cdd8c7;border-radius:9px;padding:10px 12px;font-size:16px}.login-label{display:block;font-size:13px;font-weight:600;margin-bottom:9px}.login-error{color:#a83d32;font-size:12px;line-height:1.6}.lock-note{font-size:11px;color:var(--muted)}
+    @media(max-width:620px){.access-bar{align-items:flex-start;flex-direction:column}.access-actions{width:100%}.access-button{flex:1}.hero{padding-bottom:23px}}
+    @media(min-width:1500px){.page{padding-top:15px}.hero{padding-top:61px}}
+    @media(max-width:800px){.layout>aside{position:static}}
+    @media(max-width:800px){.page{max-width:660px;padding:0 24px}.topbar{height:78px}.hero{padding:33px 0 25px;align-items:flex-start}.hero h1{font-size:32px}.hero p{max-width:300px;font-size:13px}.rate{padding:13px;gap:9px;margin-top:22px}.rate svg{display:none}.rate strong{font-size:20px}.rate span{font-size:10px}.layout{grid-template-columns:1fr;gap:18px}.summary{padding:26px 28px}.amount{font-size:55px}.formula-note{padding-top:17px}.footer{padding:28px 0 23px}}
+    @media(max-width:440px){.page{padding:0 18px}.topbar{height:73px}.brand{font-size:22px}.topnote{font-size:10px;letter-spacing:1px}.hero{display:block;padding-top:28px}.hero h1{font-size:31px;letter-spacing:-1.2px}.hero p{max-width:100%;font-size:12px}.eyebrow{font-size:10px}.rate{margin-top:18px;display:inline-flex;padding:9px 13px;border-radius:9px;gap:9px}.rate svg{display:block;width:18px;height:18px}.rate div{display:flex;align-items:baseline;gap:7px}.rate strong{font-size:17px;letter-spacing:-.2px}.rate span{margin:0;font-size:10px}.input-card{padding:23px 19px 19px;border-radius:18px}.summary{border-radius:18px;padding:25px 23px}.section-head h2{font-size:18px}.fields{gap:8px;grid-template-columns:minmax(0,1fr) 14px minmax(0,1fr)}.field input{padding:10px 12px}.arrow svg{width:14px}.group-heading{gap:8px}.count-pill{padding:5px 7px}.mode-content{padding-left:29px;padding-right:7px}.mode-content strong{font-size:11px}.mode-content small{font-size:9px}.input-foot{gap:6px}.save-status{font-size:9px}.text-button{font-size:10px}.footer{align-items:flex-start;font-size:9px}.footer>span{max-width:170px;line-height:1.6}.amount{font-size:51px}.step{font-size:10px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+    @media print{body{background:#fff}.page{max-width:none}.topbar,.hero,.input-foot,.copy-button,.footer,.toast,dialog{display:none!important}.layout{display:block}.input-card,.summary{margin:20px 0;break-inside:avoid}.summary{color:#173e36!important;background:#eff4ec!important;print-color-adjust:exact}.summary *{color:#173e36!important}.summary-head h2{font-size:20px}.amount{font-size:45px}.progress-box{display:none}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand"><span class="brandmark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h8M9 3v8M15 15l5 5M20 15l-5 5M4 17h5M4 20h5"/></svg></span>cuenta<span style="color:#80a061;margin-left:-8px">.</span></div>
+      <span class="topnote">CONTROL DE TRABAJO</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div><div class="eyebrow">TU JORNADA, EN NÚMEROS</div><h1 id="page-title">Cada trabajo cuenta.</h1><p>Guías, OT, facturas, boletas y notas de crédito. Tu saldo para el período que elijas.</p></div>
+        <div class="rate"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 9h2M15 15h2"/><circle cx="12" cy="12" r="2.5"/></svg><div><strong>$10.000</strong><span>por cada 40 realizadas</span></div></div>
+      </section>
+
+      <section class="access-bar" aria-label="Acceso de edición">
+        <div><p class="access-title" id="access-title">Modo consulta</p><p class="update-text">Última actualización: <time id="updated-at">Conectando con la nube…</time></p><p class="access-hint" id="access-hint">Inicia sesión con tu correo y contraseña para editar.</p></div>
+        <div class="access-actions"><button class="access-button" id="login-button" type="button">Iniciar sesión</button><button class="access-button primary" id="save-button" type="button" hidden>Guardar cambios</button><button class="access-button" id="logout-button" type="button" hidden>Cerrar sesión</button></div>
+      </section>
+      <p class="access-error" id="access-error" role="alert" hidden></p>
+      <section class="stage-counter" aria-labelledby="stage-counter-title">
+        <div class="stage-counter-info"><p class="eyebrow">SEGUIMIENTO DE GUÍAS</p><h2 id="stage-counter-title">Guías hechas desde que empecé a hacer facturas</h2><p>Cada guía que sumes aquí aumentará también el contador Guías al final.</p><p class="stage-counter-help" id="stage-counter-help">Inicia sesión como administrador para sumar guías.</p></div>
+        <div class="stage-counter-controls">
+          <div class="stage-counter-value"><output id="stage-counter-total" aria-labelledby="stage-counter-title" aria-live="polite" aria-atomic="true">0</output><span>guías registradas</span></div>
+          <button type="button" class="stage-counter-add" id="add-stage-guide" aria-label="Sumar una guía desde que empecé a hacer facturas" aria-describedby="stage-counter-help" disabled>+1 <span>guía</span></button>
+        </div>
+        <input id="guias-post-facturas" type="hidden" value="0" form="calculator">
+        <p class="field-error" id="guias-post-facturas-error" role="alert"></p>
+        <p class="stage-counter-note">Estas guías están incluidas en Guías al final, en el total y en el cálculo del pago.</p>
+      </section>
+      <div class="layout">
+        <form id="calculator" class="input-card" novalidate>
+          <fieldset class="edit-fields" id="edit-fields" disabled>
+          <div class="section-head"><div><h2>Tus contadores</h2><p>Ingresa la cantidad acumulada al inicio y al final.</p></div><span class="step">01 → 02</span></div>
+          <div class="cutoff-field" role="group" aria-labelledby="period-title">
+            <h3 class="period-title" id="period-title">Período del trabajo</h3>
+            <div class="date-fields">
+              <div class="field"><label for="from-date">Desde</label><input id="from-date" name="fromDate" type="date" min="1900-01-01" max="9999-12-31" required aria-describedby="period-help from-date-error"><p class="field-error" id="from-date-error"></p></div>
+              <div class="field"><label for="cutoff-date">Hasta</label><input id="cutoff-date" name="cutoffDate" type="date" min="1900-01-01" max="9999-12-31" required aria-describedby="period-help cutoff-date-error"><p class="field-error" id="cutoff-date-error"></p></div>
+            </div>
+            <p class="payment-help" id="period-help">Ingresa los contadores al inicio de «Desde» y al cierre de «Hasta».</p>
+          </div>
+
+          <section class="counter-group" aria-labelledby="guias-title">
+            <div class="group-heading"><span class="group-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/></svg></span><div><h3 id="guias-title">Guías</h3><p>Documentos realizados</p></div><span class="count-pill"><b id="guias-count">0</b> hechas</span></div>
+            <div class="fields">
+              <div class="field"><label for="guias-inicio">Al inicio</label><input id="guias-inicio" name="guiasInicio" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Guías al inicio" aria-describedby="guias-inicio-error"><p class="field-error" id="guias-inicio-error"></p></div>
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span>
+              <div class="field"><label for="guias-final">Al final</label><input id="guias-final" name="guiasFinal" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Guías al final" aria-describedby="guias-final-error"><p class="field-error" id="guias-final-error"></p></div>
+            </div>
+          </section>
+
+          <section class="counter-group" aria-labelledby="ot-title">
+            <div class="group-heading"><span class="group-icon blue" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="16" rx="2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg></span><div><h3 id="ot-title">OT</h3><p>Órdenes de trabajo</p></div><span class="count-pill"><b id="ot-count">0</b> hechas</span></div>
+            <div class="fields">
+              <div class="field"><label for="ot-inicio">Al inicio</label><input id="ot-inicio" name="otInicio" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="OT al inicio" aria-describedby="ot-inicio-error"><p class="field-error" id="ot-inicio-error"></p></div>
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span>
+              <div class="field"><label for="ot-final">Al final</label><input id="ot-final" name="otFinal" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="OT al final" aria-describedby="ot-final-error"><p class="field-error" id="ot-final-error"></p></div>
+            </div>
+          </section>
+
+          <section class="counter-group" aria-labelledby="facturas-title">
+            <div class="group-heading"><span class="group-icon amber" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3M9 7h6M9 11h6M9 15h3"/></svg></span><div><h3 id="facturas-title">Facturas</h3><p>Facturas realizadas</p></div><span class="count-pill"><b id="facturas-count">0</b> hechas</span></div>
+            <div class="fields">
+              <div class="field"><label for="facturas-inicio">Al inicio</label><input id="facturas-inicio" name="facturasInicio" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Facturas al inicio" aria-describedby="facturas-inicio-error"><p class="field-error" id="facturas-inicio-error"></p></div>
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span>
+              <div class="field"><label for="facturas-final">Al final</label><input id="facturas-final" name="facturasFinal" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Facturas al final" aria-describedby="facturas-final-error"><p class="field-error" id="facturas-final-error"></p></div>
+            </div>
+          </section>
+          <section class="counter-group" aria-labelledby="boletas-title">
+            <div class="group-heading"><span class="group-icon purple" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v18l-2-1-3 1-3-1-2 1V3M10 7h4M10 11h4M10 15h2"/></svg></span><div><h3 id="boletas-title">Boletas</h3><p>Boletas realizadas</p></div><span class="count-pill"><b id="boletas-count">0</b> hechas</span></div>
+            <div class="fields">
+              <div class="field"><label for="boletas-inicio">Al inicio</label><input id="boletas-inicio" name="boletasInicio" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Boletas al inicio" aria-describedby="boletas-inicio-error"><p class="field-error" id="boletas-inicio-error"></p></div>
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span>
+              <div class="field"><label for="boletas-final">Al final</label><input id="boletas-final" name="boletasFinal" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Boletas al final" aria-describedby="boletas-final-error"><p class="field-error" id="boletas-final-error"></p></div>
+            </div>
+          </section>
+          <section class="counter-group" aria-labelledby="notas-title">
+            <div class="group-heading"><span class="group-icon rose" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 14h8M11 11l-3 3 3 3"/></svg></span><div><h3 id="notas-title">Notas de crédito</h3><p>Notas de crédito electrónicas</p></div><span class="count-pill"><b id="notas-count">0</b> hechas</span></div>
+            <div class="fields">
+              <div class="field"><label for="notas-inicio">Al inicio</label><input id="notas-inicio" name="notasInicio" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Notas de crédito al inicio" aria-describedby="notas-inicio-error"><p class="field-error" id="notas-inicio-error"></p></div>
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></span>
+              <div class="field"><label for="notas-final">Al final</label><input id="notas-final" name="notasFinal" type="number" min="0" max="1000000000" step="1" inputmode="numeric" value="0" required aria-label="Notas de crédito al final" aria-describedby="notas-final-error"><p class="field-error" id="notas-final-error"></p></div>
+            </div>
+          </section>
+
+          <fieldset class="mode-fieldset"><legend>¿Cómo se paga?</legend><div class="modes">
+            <label class="mode"><input type="radio" name="mode" value="proporcional" checked><span class="mode-content"><strong>Proporcional</strong><small>$250 por cada realizada</small></span></label>
+            <label class="mode"><input type="radio" name="mode" value="bloques"><span class="mode-content"><strong>Bloques de 40</strong><small>Solo bloques completos</small></span></label>
+          </div></fieldset>
+          <div class="payment-section field">
+            <label for="paid-amount">Ya pagado (pesos)</label>
+            <div class="money-field"><span aria-hidden="true">$</span><input id="paid-amount" name="paidAmount" type="number" min="0" max="1000000000000" step="1" inputmode="numeric" value="0" required aria-describedby="paid-amount-help paid-amount-error"></div>
+            <p id="paid-amount-help" class="payment-help">Ingresa lo que ya recibiste por estos trabajos. Se descontará del pago total.</p>
+            <p class="field-error" id="paid-amount-error"></p>
+          </div>
+          <div class="input-foot"><span class="save-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span id="save-text">Conectando…</span></span><button class="text-button" id="reset-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v6h6M3.5 11A9 9 0 1 1 5 18"/></svg>Limpiar valores</button></div>
+          </fieldset>
+        </form>
+
+        <aside aria-label="Resultado del cálculo">
+          <section class="summary">
+            <p class="cutoff-label" id="cutoff-result">Período: —</p>
+            <div class="summary-head"><h2>Saldo pendiente</h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8V6a2 2 0 0 0-2-2H6a3 3 0 0 0 0 6h14v10H6a3 3 0 0 1-3-3V7M20 12h-5v4h5"/></svg></div>
+            <div class="amount-line"><output id="amount" class="amount" for="guias-inicio guias-final ot-inicio ot-final facturas-inicio facturas-final boletas-inicio boletas-final notas-inicio notas-final paid-amount">$0</output><span class="currency">CLP</span></div>
+            <p id="pay-explanation" class="pay-explanation">0 realizadas × $250 por unidad</p>
+            <div class="settlement">
+              <div class="breakdown-row"><span class="row-label">Pago total</span><strong id="gross-pay">$0</strong></div>
+              <div class="breakdown-row"><span class="row-label">Ya pagado</span><strong id="paid-result">$0</strong></div>
+              <p class="overpayment" id="overpayment" hidden></p>
+            </div>
+            <div class="breakdown">
+              <div class="breakdown-row"><span class="row-label"><span class="dot"></span>Guías realizadas</span><strong id="guias-result">0</strong></div>
+              <div class="breakdown-row"><span class="row-label"><span class="dot blue"></span>OT realizadas</span><strong id="ot-result">0</strong></div>
+              <div class="breakdown-row"><span class="row-label"><span class="dot amber"></span>Facturas realizadas</span><strong id="facturas-result">0</strong></div>
+              <div class="breakdown-row"><span class="row-label"><span class="dot purple"></span>Boletas realizadas</span><strong id="boletas-result">0</strong></div>
+              <div class="breakdown-row"><span class="row-label"><span class="dot rose"></span>Notas de crédito realizadas</span><strong id="notas-result">0</strong></div>
+              <div class="breakdown-row total-row"><span class="row-label">Total realizadas</span><strong id="total">0</strong></div>
+            </div>
+            <div class="progress-box">
+              <div class="progress-heading"><span id="block-heading">Próximo bloque de 40</span><b id="progress-count">0 / 40</b></div>
+              <div class="progress-track" id="progress" role="progressbar" aria-label="Avance hacia el próximo bloque de 40" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
+              <p class="progress-caption" id="progress-caption">Faltan 40 realizadas para completar un bloque.</p>
+            </div>
+            <div class="summary-actions">
+              <button type="button" class="copy-button" id="excel-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13l5 5M13 13l-5 5"/></svg><span>Descargar resumen en Excel</span></button>
+              <button type="button" class="copy-button secondary-button" id="copy-button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg><span>Copiar resumen</span></button>
+            </div>
+            <p class="download-note" id="download-note">Archivo .xlsx con tus valores y las fórmulas del cálculo.</p>
+          </section>
+          <div class="formula-note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7h.01"/></svg><div><h3>Las cuentas claras</h3><p>En cada contador, restamos el inicio al final.<br>Sumamos guías, OT, facturas, boletas y notas de crédito con la misma tarifa, y descontamos lo ya pagado.</p><p class="formula" id="formula">(Total × $10.000 ÷ 40) − ya pagado = saldo.</p></div></div>
+        </aside>
+      </div>
+      <p class="sr-only" id="live-result" aria-live="polite" aria-atomic="true"></p>
+    </main>
+    <footer class="footer"><span>Datos guardados en la nube. Puedes descargar una copia de respaldo cuando quieras.</span><a id="download" href="#" download="Cuenta_trabajos_respaldo.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"/></svg>Descargar copia de respaldo</a></footer>
+  </div>
+  <dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">¿Empezamos de cero?</h2><p>Se borrarán los contadores de guías, OT, facturas, boletas y notas de crédito, las guías posteriores a las facturas y el monto ya pagado. Las fechas Desde y Hasta y la modalidad de pago se mantendrán.</p><div class="actions"><button type="button" id="cancel-reset" autofocus>Cancelar</button><button type="button" class="confirm" id="confirm-reset">Limpiar valores</button></div></dialog>
+  <dialog id="copy-dialog" aria-labelledby="copy-title"><h2 id="copy-title">Tu resumen</h2><p>Selecciona y copia este texto.</p><textarea id="copy-text" readonly aria-label="Resumen para copiar"></textarea><div class="actions"><button type="button" id="close-copy">Cerrar</button></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <dialog id="login-dialog" aria-labelledby="login-title"><form id="login-form"><h2 id="login-title">Iniciar sesión</h2><p>Ingresa el correo y la contraseña de tu usuario para editar.</p><label class="login-label" for="editor-email">Correo</label><input class="login-input" id="editor-email" name="email" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="120" required style="margin-bottom:16px"><label class="login-label" for="editor-password">Contraseña</label><input class="login-input" id="editor-password" name="password" type="password" autocomplete="current-password" maxlength="128" required><p class="login-error" id="login-error" role="alert"></p><div class="actions"><button type="button" id="cancel-login">Cancelar</button><button type="submit" class="confirm" id="submit-login">Iniciar sesión</button></div></form></dialog>
+  <noscript><p style="margin:25px;text-align:center">Activa JavaScript en tu navegador para usar la calculadora.</p></noscript>
+  <script id="snapshot-data" type="application/json">{"values": {"guias-inicio": "0", "guias-final": "0", "ot-inicio": "0", "ot-final": "0", "facturas-inicio": "0", "facturas-final": "0", "boletas-inicio": "0", "boletas-final": "0", "paid-amount": "0", "guias-post-facturas": "0", "from-date": "2026-10-11", "cutoff-date": "2026-10-11"}, "mode": "proporcional", "revision": 0, "updatedAt": null, "guideTotalsVersion": 2}</script>
+  <script>
+    'use strict';
+    // Cálculo independiente de la interfaz: los valores son contadores acumulados.
+    const TYPES = ['guias', 'ot', 'facturas', 'boletas', 'notas'];
+    const TYPE_LABELS = { guias: 'Guías', ot: 'OT', facturas: 'Facturas', boletas: 'Boletas', notas: 'Notas de crédito' };
+    const COUNTERS = TYPES.flatMap(type => [type + '-inicio', type + '-final']);
+    const NUMBER_INPUTS = [...COUNTERS, 'paid-amount'];
+    const INPUTS = [...NUMBER_INPUTS, 'guias-post-facturas', 'from-date', 'cutoff-date'];
+    const BLOCK_SIZE = 40;
+    const BLOCK_PAY = 10000;
+    function validCutoffDate(value) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value < '1900-01-01' || value > '9999-12-31') return false;
+      const date = new Date(value + 'T00:00:00Z');
+      return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+    }
+    function formatCutoffDate(value) { return value.split('-').reverse().join('/'); }
+    function chileDateParts(now = new Date()) {
+      return Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(now).filter(part => part.type !== 'literal').map(part => [part.type, part.value]));
+    }
+    function calculate(values, mode) {
+      const errors = {};
+      const parsed = {};
+      const laterGuidesRaw = String(values['guias-post-facturas'] ?? '0').trim();
+      if (!/^\d+$/.test(laterGuidesRaw) || !Number.isSafeInteger(Number(laterGuidesRaw)) || Number(laterGuidesRaw) > 1000000000) errors['guias-post-facturas'] = 'Revisa el contador de guías de esta etapa.';
+      const laterGuides = Number(laterGuidesRaw);
+      for (const id of COUNTERS) {
+        const raw = String(values[id] ?? '').trim();
+        if (!raw) errors[id] = 'Ingresa un número; si no hay, usa 0.';
+        else if (!/^\d+$/.test(raw) || !Number.isSafeInteger(Number(raw))) errors[id] = 'Usa un número entero desde 0.';
+        else if (Number(raw) > 1000000000) errors[id] = 'El máximo es 1.000.000.000.';
+        else parsed[id] = Number(raw);
+      }
+      const completed = Object.fromEntries(TYPES.map(type => [type, null]));
+      for (const type of TYPES) {
+        const start = type + '-inicio', end = type + '-final';
+        if (!errors[start] && !errors[end]) {
+          if (parsed[end] < parsed[start]) errors[end] = 'El final debe ser igual o mayor al inicio.';
+          else completed[type] = parsed[end] - parsed[start];
+        }
+      }
+      const paidRaw = String(values['paid-amount'] ?? '0').trim();
+      if (!paidRaw) errors['paid-amount'] = 'Ingresa el monto; si no has recibido pagos, usa 0.';
+      else if (!/^\d+$/.test(paidRaw) || !Number.isSafeInteger(Number(paidRaw))) errors['paid-amount'] = 'Ingresa pesos enteros, desde 0.';
+      else if (Number(paidRaw) > 1000000000000) errors['paid-amount'] = 'El máximo es $1.000.000.000.000.';
+      const cutoffDate = String(values['cutoff-date'] ?? '').trim();
+      const startDate = String(values['from-date'] ?? '').trim();
+      if (!validCutoffDate(startDate)) errors['from-date'] = 'Elige una fecha Desde válida.';
+      if (!validCutoffDate(cutoffDate)) errors['cutoff-date'] = 'Elige una fecha Hasta válida.';
+      if (!errors['from-date'] && !errors['cutoff-date'] && cutoffDate < startDate) errors['cutoff-date'] = 'Hasta debe ser igual o posterior a Desde.';
+      if (Object.keys(errors).length) return { valid: false, errors, ...completed };
+      const total = TYPES.reduce((sum, type) => sum + completed[type], 0);
+      const blocks = Math.floor(total / BLOCK_SIZE);
+      const remainder = total % BLOCK_SIZE;
+      const pay = mode === 'bloques' ? blocks * BLOCK_PAY : total * (BLOCK_PAY / BLOCK_SIZE);
+      const paid = Number(paidRaw);
+      const balance = pay - paid;
+      return { valid: true, errors, ...completed, laterGuides, startDate, cutoffDate, total, blocks, remainder, remaining: BLOCK_SIZE - remainder, pay, paid, balance, pending: Math.max(0, balance), overpaid: Math.max(0, -balance), mode };
+    }
+
+    // Plantilla XLSX creada con Artifact Tool; se completa con los valores actuales.
+    const EXCEL_TEMPLATE_PARTS = /* EXCEL_TEMPLATE_START */[{"name":"xl/workbook.xml","data":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48eDp3b3JrYm9vayB4bWxuczp4PSJodHRwOi8vc2NoZW1hcy5vcGVueG1sZm9ybWF0cy5vcmcvc3ByZWFkc2hlZXRtbC8yMDA2L21haW4iPjx4OnNoZWV0cz48eDpzaGVldCBuYW1lPSJSZXN1bWVuIiBzaGVldElkPSIxIiByOmlkPSJSYjgwMWZiYjQxMTc1NDdjOCIgeG1sbnM6cj0iaHR0cDovL3NjaGVtYXMub3BlbnhtbGZvcm1hdHMub3JnL29mZmljZURvY3VtZW50LzIwMDYvcmVsYXRpb25zaGlwcyIgLz48L3g6c2hlZXRzPjwveDp3b3JrYm9vaz4="},{"name":"xl/styles.xml","data":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48eDpzdHlsZVNoZWV0IHhtbG5zOng9Imh0dHA6Ly9zY2hlbWFzLm9wZW54bWxmb3JtYXRzLm9yZy9zcHJlYWRzaGVldG1sLzIwMDYvbWFpbiI+PHg6bnVtRm10cyBjb3VudD0iNCI+PHg6bnVtRm10IG51bUZtdElkPSIyMDAiIGZvcm1hdENvZGU9ImRkL21tL3l5eXkgaGg6bW0iIC8+PHg6bnVtRm10IG51bUZtdElkPSIyMDEiIGZvcm1hdENvZGU9ImRkL21tL3l5eXkiIC8+PHg6bnVtRm10IG51bUZtdElkPSIyMDIiIGZvcm1hdENvZGU9IiMsIyMwIiAvPjx4Om51bUZtdCBudW1GbXRJZD0iMjAzIiBmb3JtYXRDb2RlPSImcXVvdDskJnF1b3Q7IywjIzA7W1JlZF0tJnF1b3Q7JCZxdW90OyMsIyMwOyZxdW90OyQmcXVvdDswIiAvPjwveDpudW1GbXRzPjx4OmZvbnRzIGNvdW50PSI4Ij48eDpmb250Pjx4OnN6IHZhbD0iMTEiIC8+PHg6bmFtZSB2YWw9IkNhcmxpdG8iIC8+PC94OmZvbnQ+PHg6Zm9udD48eDpzeiB2YWw9IjExIiAvPjx4OmNvbG9yIHJnYj0iRkYyMzNEMzYiIC8+PHg6bmFtZSB2YWw9IkFyaWFsIiAvPjwveDpmb250Pjx4OmZvbnQ+PHg6YiAvPjx4OnN6IHZhbD0iMTYiIC8+PHg6Y29sb3IgcmdiPSJGRjE3M0UzNiIgLz48eDpuYW1lIHZhbD0iQXJpYWwiIC8+PC94OmZvbnQ+PHg6Zm9udD48eDpzeiB2YWw9IjExIiAvPjx4OmNvbG9yIHJnYj0iRkY2OTc3NzAiIC8+PHg6bmFtZSB2YWw9IkFyaWFsIiAvPjwveDpmb250Pjx4OmZvbnQ+PHg6YiAvPjx4OnN6IHZhbD0iMTMiIC8+PHg6Y29sb3IgcmdiPSJGRjE3M0UzNiIgLz48eDpuYW1lIHZhbD0iQXJpYWwiIC8+PC94OmZvbnQ+PHg6Zm9udD48eDpiIC8+PHg6c3ogdmFsPSIxMSIgLz48eDpjb2xvciByZ2I9IkZGRkZGRkZGIiAvPjx4Om5hbWUgdmFsPSJBcmlhbCIgLz48L3g6Zm9udD48eDpmb250Pjx4OmIgLz48eDpzeiB2YWw9IjExIiAvPjx4OmNvbG9yIHJnYj0iRkYyMzNEMzYiIC8+PHg6bmFtZSB2YWw9IkFyaWFsIiAvPjwveDpmb250Pjx4OmZvbnQ+PHg6c3ogdmFsPSIxMCIgLz48eDpjb2xvciByZ2I9IkZGNjk3NzcwIiAvPjx4Om5hbWUgdmFsPSJBcmlhbCIgLz48L3g6Zm9udD48L3g6Zm9udHM+PHg6ZmlsbHMgY291bnQ9IjYiPjx4OmZpbGw+PHg6cGF0dGVybkZpbGwgcGF0dGVyblR5cGU9Im5vbmUiIC8+PC94OmZpbGw+PHg6ZmlsbD48eDpwYXR0ZXJuRmlsbCBwYXR0ZXJuVHlwZT0iZ3JheTEyNSIgLz48L3g6ZmlsbD48eDpmaWxsPjx4OnBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PHg6ZmdDb2xvciByZ2I9IkZGRkZGM0NDIiAvPjwveDpwYXR0ZXJuRmlsbD48L3g6ZmlsbD48eDpmaWxsPjx4OnBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PHg6ZmdDb2xvciByZ2I9IkZGRUFGMURGIiAvPjwveDpwYXR0ZXJuRmlsbD48L3g6ZmlsbD48eDpmaWxsPjx4OnBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PHg6ZmdDb2xvciByZ2I9IkZGMTczRTM2IiAvPjwveDpwYXR0ZXJuRmlsbD48L3g6ZmlsbD48eDpmaWxsPjx4OnBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PHg6ZmdDb2xvciByZ2I9IkZGRURGMUU4IiAvPjwveDpwYXR0ZXJuRmlsbD48L3g6ZmlsbD48L3g6ZmlsbHM+PHg6Ym9yZGVycyBjb3VudD0iMyI+PHg6Ym9yZGVyPjx4OmxlZnQgLz48eDpyaWdodCAvPjx4OnRvcCAvPjx4OmJvdHRvbSAvPjx4OmRpYWdvbmFsIC8+PC94OmJvcmRlcj48eDpib3JkZXI+PHg6bGVmdCAvPjx4OnJpZ2h0IC8+PHg6dG9wIC8+PHg6Ym90dG9tIHN0eWxlPSJ0aGluIj48eDpjb2xvciByZ2I9IkZGQjZDN0I5IiAvPjwveDpib3R0b20+PHg6ZGlhZ29uYWwgLz48L3g6Ym9yZGVyPjx4OmJvcmRlcj48eDpsZWZ0IC8+PHg6cmlnaHQgLz48eDp0b3Agc3R5bGU9InRoaW4iPjx4OmNvbG9yIHJnYj0iRkZCQUNCQkQiIC8+PC94OnRvcD48eDpib3R0b20gLz48eDpkaWFnb25hbCAvPjwveDpib3JkZXI+PC94OmJvcmRlcnM+PHg6Y2VsbFN0eWxlWGZzIGNvdW50PSIxIj48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSIwIiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIwIiAvPjwveDpjZWxsU3R5bGVYZnM+PHg6Y2VsbFhmcyBjb3VudD0iNDMiPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjAiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIC8+PHg6eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iMSIgZmlsbElkPSIwIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgLz48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSIxIiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjIiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iMiIgZmlsbElkPSIwIiBib3JkZXJJZD0iMSIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSIxIiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIxIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDAiIGZvbnRJZD0iMSIgZmlsbElkPSIwIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSIzIiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDAiIGZvbnRJZD0iMyIgZmlsbElkPSIwIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAxIiBmb250SWQ9IjEiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMSIgZm9udElkPSIxIiBmaWxsSWQ9IjIiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDEiIGZvbnRJZD0iMSIgZmlsbElkPSIyIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCBob3Jpem9udGFsPSJyaWdodCIgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iMSIgZmlsbElkPSIzIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSI0IiBmaWxsSWQ9IjMiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjEiIGZpbGxJZD0iNCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iNSIgZmlsbElkPSI0IiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSIxIiBmaWxsSWQ9IjUiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjYiIGZpbGxJZD0iNSIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iNiIgZmlsbElkPSI1IiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCBob3Jpem9udGFsPSJjZW50ZXIiIHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjEiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjIiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjAiIGZvbnRJZD0iNiIgZmlsbElkPSIwIiBib3JkZXJJZD0iMiIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAwIiBmb250SWQ9IjMiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgaG9yaXpvbnRhbD0icmlnaHQiIHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjEiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgd3JhcFRleHQ9IjEiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjEiIGZpbGxJZD0iMyIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgd3JhcFRleHQ9IjEiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDIiIGZvbnRJZD0iMSIgZmlsbElkPSIzIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAyIiBmb250SWQ9IjYiIGZpbGxJZD0iMyIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMiIgZm9udElkPSI2IiBmaWxsSWQ9IjMiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IGhvcml6b250YWw9InJpZ2h0IiB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMCIgZm9udElkPSI3IiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIwIiBmb250SWQ9IjEiIGZpbGxJZD0iMiIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMiIgZm9udElkPSIxIiBmaWxsSWQ9IjIiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDIiIGZvbnRJZD0iMSIgZmlsbElkPSIwIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAyIiBmb250SWQ9IjYiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjIiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMyIgZm9udElkPSI0IiBmaWxsSWQ9IjMiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDMiIGZvbnRJZD0iMSIgZmlsbElkPSIwIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAzIiBmb250SWQ9IjEiIGZpbGxJZD0iMiIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMyIgZm9udElkPSI2IiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIyIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDIiIGZvbnRJZD0iMSIgZmlsbElkPSIyIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCBob3Jpem9udGFsPSJyaWdodCIgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMiIgZm9udElkPSIxIiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IGhvcml6b250YWw9InJpZ2h0IiB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAyIiBmb250SWQ9IjYiIGZpbGxJZD0iMCIgYm9yZGVySWQ9IjIiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgaG9yaXpvbnRhbD0icmlnaHQiIHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDMiIGZvbnRJZD0iNCIgZmlsbElkPSIzIiBib3JkZXJJZD0iMCIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCBob3Jpem9udGFsPSJyaWdodCIgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PHg6eGYgbnVtRm10SWQ9IjIwMyIgZm9udElkPSIxIiBmaWxsSWQ9IjAiIGJvcmRlcklkPSIwIiB4ZklkPSIwIiBhcHBseU51bWJlckZvcm1hdD0iMSIgYXBwbHlGb250PSIxIiBhcHBseUZpbGw9IjEiIGFwcGx5Qm9yZGVyPSIxIiBhcHBseUFsaWdubWVudD0iMSI+PHg6YWxpZ25tZW50IGhvcml6b250YWw9InJpZ2h0IiB2ZXJ0aWNhbD0iY2VudGVyIiAvPjwveDp4Zj48eDp4ZiBudW1GbXRJZD0iMjAzIiBmb250SWQ9IjEiIGZpbGxJZD0iMiIgYm9yZGVySWQ9IjAiIHhmSWQ9IjAiIGFwcGx5TnVtYmVyRm9ybWF0PSIxIiBhcHBseUZvbnQ9IjEiIGFwcGx5RmlsbD0iMSIgYXBwbHlCb3JkZXI9IjEiIGFwcGx5QWxpZ25tZW50PSIxIj48eDphbGlnbm1lbnQgaG9yaXpvbnRhbD0icmlnaHQiIHZlcnRpY2FsPSJjZW50ZXIiIC8+PC94OnhmPjx4OnhmIG51bUZtdElkPSIyMDMiIGZvbnRJZD0iNiIgZmlsbElkPSIwIiBib3JkZXJJZD0iMiIgeGZJZD0iMCIgYXBwbHlOdW1iZXJGb3JtYXQ9IjEiIGFwcGx5Rm9udD0iMSIgYXBwbHlGaWxsPSIxIiBhcHBseUJvcmRlcj0iMSIgYXBwbHlBbGlnbm1lbnQ9IjEiPjx4OmFsaWdubWVudCBob3Jpem9udGFsPSJyaWdodCIgdmVydGljYWw9ImNlbnRlciIgLz48L3g6eGY+PC94OmNlbGxYZnM+PHg6Y2VsbFN0eWxlcyBjb3VudD0iMSI+PHg6Y2VsbFN0eWxlIG5hbWU9Ik5vcm1hbCIgeGZJZD0iMCIgLz48L3g6Y2VsbFN0eWxlcz48eDpkeGZzIGNvdW50PSIxIj48eDpkeGY+PHg6Zm9udD48eDpiIC8+PHg6Y29sb3IgcmdiPSJGRjg1NTAxNSIgLz48L3g6Zm9udD48eDpmaWxsPjx4OnBhdHRlcm5GaWxsIHBhdHRlcm5UeXBlPSJzb2xpZCI+PHg6YmdDb2xvciByZ2I9IkZGRkZGMEQ5IiAvPjwveDpwYXR0ZXJuRmlsbD48L3g6ZmlsbD48L3g6ZHhmPjwveDpkeGZzPjwveDpzdHlsZVNoZWV0Pg=="},{"name":"xl/theme/theme1.xml","data":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48YTp0aGVtZSBuYW1lPSJDaGF0R1BUIiB4bWxuczphPSJodHRwOi8vc2NoZW1hcy5vcGVueG1sZm9ybWF0cy5vcmcvZHJhd2luZ21sLzIwMDYvbWFpbiI+PGE6dGhlbWVFbGVtZW50cz48YTpjbHJTY2hlbWUgbmFtZT0iQ2hhdEdQVCI+PGE6ZGsxPjxhOnN5c0NsciB2YWw9IndpbmRvd1RleHQiIGxhc3RDbHI9IjAwMDAwMCIgLz48L2E6ZGsxPjxhOmx0MT48YTpzeXNDbHIgdmFsPSJ3aW5kb3ciIGxhc3RDbHI9IkZGRkZGRiIgLz48L2E6bHQxPjxhOmRrMj48YTpzcmdiQ2xyIHZhbD0iMEUyODQxIiAvPjwvYTpkazI+PGE6bHQyPjxhOnNyZ2JDbHIgdmFsPSJFOEU4RTgiIC8+PC9hOmx0Mj48YTphY2NlbnQxPjxhOnNyZ2JDbHIgdmFsPSIxNTYwODIiIC8+PC9hOmFjY2VudDE+PGE6YWNjZW50Mj48YTpzcmdiQ2xyIHZhbD0iRTk3MTMyIiAvPjwvYTphY2NlbnQyPjxhOmFjY2VudDM+PGE6c3JnYkNsciB2YWw9IjE5NkIyNCIgLz48L2E6YWNjZW50Mz48YTphY2NlbnQ0PjxhOnNyZ2JDbHIgdmFsPSIwRjlFRDUiIC8+PC9hOmFjY2VudDQ+PGE6YWNjZW50NT48YTpzcmdiQ2xyIHZhbD0iQTAyQjkzIiAvPjwvYTphY2NlbnQ1PjxhOmFjY2VudDY+PGE6c3JnYkNsciB2YWw9IjRFQTcyRSIgLz48L2E6YWNjZW50Nj48YTpobGluaz48YTpzcmdiQ2xyIHZhbD0iNDY3ODg2IiAvPjwvYTpobGluaz48YTpmb2xIbGluaz48YTpzcmdiQ2xyIHZhbD0iOTY2MDdEIiAvPjwvYTpmb2xIbGluaz48L2E6Y2xyU2NoZW1lPjxhOmZvbnRTY2hlbWUgbmFtZT0iT2ZmaWNlIj48YTptYWpvckZvbnQ+PGE6bGF0aW4gdHlwZWZhY2U9IkNhbGlicmkgTGlnaHQiIC8+PGE6ZWEgdHlwZWZhY2U9IkNhbGlicmkgTGlnaHQiIC8+PGE6Y3MgdHlwZWZhY2U9IkNhbGlicmkgTGlnaHQiIC8+PC9hOm1ham9yRm9udD48YTptaW5vckZvbnQ+PGE6bGF0aW4gdHlwZWZhY2U9IkNhbGlicmkiIC8+PGE6ZWEgdHlwZWZhY2U9IkNhbGlicmkiIC8+PGE6Y3MgdHlwZWZhY2U9IkNhbGlicmkiIC8+PC9hOm1pbm9yRm9udD48L2E6Zm9udFNjaGVtZT48YTpmbXRTY2hlbWUgbmFtZT0iQ2hhdEdQVCI+PGE6ZmlsbFN0eWxlTHN0PjxhOnNvbGlkRmlsbD48YTpzY2hlbWVDbHIgdmFsPSJwaENsciIgLz48L2E6c29saWRGaWxsPjxhOmdyYWRGaWxsPjxhOmdzTHN0PjxhOmdzIHBvcz0iMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI2NzAwMCIgLz48YTpsdW1Nb2QgdmFsPSIxMTAwMDAiIC8+PGE6c2F0TW9kIHZhbD0iMTA1MDAwIiAvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjxhOmdzIHBvcz0iNTAwMDAiPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIj48YTp0aW50IHZhbD0iNzMwMDAiIC8+PGE6bHVtTW9kIHZhbD0iMTA1MDAwIiAvPjxhOnNhdE1vZCB2YWw9IjEwMzAwMCIgLz48L2E6c2NoZW1lQ2xyPjwvYTpncz48YTpncyBwb3M9IjEwMDAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI4MTAwMCIgLz48YTpsdW1Nb2QgdmFsPSIxMDUwMDAiIC8+PGE6c2F0TW9kIHZhbD0iMTA5MDAwIiAvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjwvYTpnc0xzdD48YTpsaW4gYW5nPSI1NDAwMDAwIiBzY2FsZWQ9IjAiIC8+PC9hOmdyYWRGaWxsPjxhOmdyYWRGaWxsPjxhOmdzTHN0PjxhOmdzIHBvcz0iMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI5NDAwMCIgLz48YTpsdW1Nb2QgdmFsPSIxMDIwMDAiIC8+PGE6c2F0TW9kIHZhbD0iMTAzMDAwIiAvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjxhOmdzIHBvcz0iNTAwMDAiPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIj48YTpzaGFkZSB2YWw9IjEwMDAwMCIgLz48YTpsdW1Nb2QgdmFsPSIxMDAwMDAiIC8+PGE6c2F0TW9kIHZhbD0iMTEwMDAwIiAvPjwvYTpzY2hlbWVDbHI+PC9hOmdzPjxhOmdzIHBvcz0iMTAwMDAwIj48YTpzY2hlbWVDbHIgdmFsPSJwaENsciI+PGE6c2hhZGUgdmFsPSI3ODAwMCIgLz48YTpsdW1Nb2QgdmFsPSI5OTAwMCIgLz48YTpzYXRNb2QgdmFsPSIxMjAwMDAiIC8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PC9hOmdzTHN0PjxhOmxpbiBhbmc9IjU0MDAwMDAiIHNjYWxlZD0iMCIgLz48L2E6Z3JhZEZpbGw+PC9hOmZpbGxTdHlsZUxzdD48YTpsblN0eWxlTHN0PjxhOmxuIHc9IjEyNzAwIj48YTpzb2xpZEZpbGw+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiIC8+PC9hOnNvbGlkRmlsbD48YTpwcnN0RGFzaCB2YWw9InNvbGlkIiAvPjwvYTpsbj48YTpsbiB3PSIxOTA1MCI+PGE6c29saWRGaWxsPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIiAvPjwvYTpzb2xpZEZpbGw+PGE6cHJzdERhc2ggdmFsPSJzb2xpZCIgLz48L2E6bG4+PGE6bG4gdz0iMjU0MDAiPjxhOnNvbGlkRmlsbD48YTpzY2hlbWVDbHIgdmFsPSJwaENsciIgLz48L2E6c29saWRGaWxsPjxhOnByc3REYXNoIHZhbD0ic29saWQiIC8+PC9hOmxuPjwvYTpsblN0eWxlTHN0PjxhOmVmZmVjdFN0eWxlTHN0PjxhOmVmZmVjdFN0eWxlPjxhOmVmZmVjdExzdCAvPjwvYTplZmZlY3RTdHlsZT48YTplZmZlY3RTdHlsZT48YTplZmZlY3RMc3QgLz48L2E6ZWZmZWN0U3R5bGU+PGE6ZWZmZWN0U3R5bGU+PGE6ZWZmZWN0THN0PjxhOm91dGVyU2hkdyBibHVyUmFkPSI1NzE1MCIgZGlzdD0iMTkwNTAiIGRpcj0iNTQwMDAwMCI+PGE6c3JnYkNsciB2YWw9IjAwMDAwMCI+PGE6YWxwaGEgdmFsPSI2MzAwMCIgLz48L2E6c3JnYkNscj48L2E6b3V0ZXJTaGR3PjwvYTplZmZlY3RMc3Q+PC9hOmVmZmVjdFN0eWxlPjwvYTplZmZlY3RTdHlsZUxzdD48YTpiZ0ZpbGxTdHlsZUxzdD48YTpzb2xpZEZpbGw+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiIC8+PC9hOnNvbGlkRmlsbD48YTpzb2xpZEZpbGw+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI5NTAwMCIgLz48YTpzYXRNb2QgdmFsPSIxNzAwMDAiIC8+PC9hOnNjaGVtZUNscj48L2E6c29saWRGaWxsPjxhOmdyYWRGaWxsPjxhOmdzTHN0PjxhOmdzIHBvcz0iMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI5MzAwMCIgLz48YTpzaGFkZSB2YWw9Ijk4MDAwIiAvPjxhOmx1bU1vZCB2YWw9IjEwMjAwMCIgLz48YTpzYXRNb2QgdmFsPSIxNTAwMDAiIC8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PGE6Z3MgcG9zPSI1MDAwMCI+PGE6c2NoZW1lQ2xyIHZhbD0icGhDbHIiPjxhOnRpbnQgdmFsPSI5ODAwMCIgLz48YTpzaGFkZSB2YWw9IjkwMDAwIiAvPjxhOmx1bU1vZCB2YWw9IjEwMzAwMCIgLz48YTpzYXRNb2QgdmFsPSIxMzAwMDAiIC8+PC9hOnNjaGVtZUNscj48L2E6Z3M+PGE6Z3MgcG9zPSIxMDAwMDAiPjxhOnNjaGVtZUNsciB2YWw9InBoQ2xyIj48YTpzaGFkZSB2YWw9IjYzMDAwIiAvPjxhOnNhdE1vZCB2YWw9IjEyMDAwMCIgLz48L2E6c2NoZW1lQ2xyPjwvYTpncz48L2E6Z3NMc3Q+PGE6bGluIGFuZz0iNTQwMDAwMCIgc2NhbGVkPSIwIiAvPjwvYTpncmFkRmlsbD48L2E6YmdGaWxsU3R5bGVMc3Q+PC9hOmZtdFNjaGVtZT48L2E6dGhlbWVFbGVtZW50cz48L2E6dGhlbWU+"},{"name":"xl/sharedStrings.xml","data":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48eDpzc3QgeG1sbnM6eD0iaHR0cDovL3NjaGVtYXMub3BlbnhtbGZvcm1hdHMub3JnL3NwcmVhZHNoZWV0bWwvMjAwNi9tYWluIiAvPg=="},{"name":"xl/worksheets/sheet1.xml","data":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48eDp3b3Jrc2hlZXQgeG1sbnM6eD0iaHR0cDovL3NjaGVtYXMub3BlbnhtbGZvcm1hdHMub3JnL3NwcmVhZHNoZWV0bWwvMjAwNi9tYWluIj48eDpzaGVldFByPjx4OnRhYkNvbG9yIHJnYj0iRkYxNzNFMzYiIC8+PC94OnNoZWV0UHI+PHg6c2hlZXRWaWV3cz48eDpzaGVldFZpZXcgc2hvd0dyaWRMaW5lcz0iMCIgd29ya2Jvb2tWaWV3SWQ9IjAiIC8+PC94OnNoZWV0Vmlld3M+PHg6c2hlZXRGb3JtYXRQciBkZWZhdWx0Um93SGVpZ2h0PSIxNSIgLz48eDpjb2xzPjx4OmNvbCBtaW49IjEiIG1heD0iMSIgd2lkdGg9IjQ1IiBoaWRkZW49IjAiIGN1c3RvbVdpZHRoPSIxIiAvPjx4OmNvbCBtaW49IjIiIG1heD0iMiIgd2lkdGg9IjE3IiBoaWRkZW49IjAiIGN1c3RvbVdpZHRoPSIxIiAvPjx4OmNvbCBtaW49IjMiIG1heD0iMyIgd2lkdGg9IjE3IiBoaWRkZW49IjAiIGN1c3RvbVdpZHRoPSIxIiAvPjx4OmNvbCBtaW49IjQiIG1heD0iNCIgd2lkdGg9IjI2IiBoaWRkZW49IjAiIGN1c3RvbVdpZHRoPSIxIiAvPjwveDpjb2xzPjx4OnNoZWV0RGF0YT48eDpyb3cgcj0iMSIgaHQ9IjEwIiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTEiIHM9IjIiIC8+PHg6YyByPSJCMSIgcz0iMiIgLz48eDpjIHI9IkMxIiBzPSIyIiAvPjx4OmMgcj0iRDEiIHM9IjIiIC8+PC94OnJvdz48eDpyb3cgcj0iMiIgaHQ9IjM0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTIiIHM9IjQiIHQ9InN0ciI+PHg6dj5SZXN1bWVuIGRlIHRyYWJham8geSBwYWdvPC94OnY+PC94OmM+PHg6YyByPSJCMiIgcz0iNSIgLz48eDpjIHI9IkMyIiBzPSI1IiAvPjx4OmMgcj0iRDIiIHM9IjUiIC8+PC94OnJvdz48eDpyb3cgcj0iMyIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTMiIHM9IjciIHQ9InN0ciI+PHg6dj5FeHBvcnRhZG8gKGhvcmEgZGUgQ2hpbGUpPC94OnY+PC94OmM+PHg6YyByPSJCMyIgcz0iNyIgLz48eDpjIHI9IkMzIiBzPSI3IiAvPjx4OmMgcj0iRDMiIHM9IjIxIiB0PSJuIj48eDp2PjQ2MzA0LjU8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSI0IiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBNCIgcz0iMiIgdD0ic3RyIj48eDp2PkRlc2RlPC94OnY+PC94OmM+PHg6YyByPSJCNCIgcz0iMTEiIHQ9Im4iPjx4OnY+NDYyOTY8L3g6dj48L3g6Yz48eDpjIHI9IkM0IiBzPSIyIiB0PSJzdHIiPjx4OnY+SGFzdGE8L3g6dj48L3g6Yz48eDpjIHI9IkQ0IiBzPSIxMSIgdD0ibiI+PHg6dj40NjMwNDwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjUiIGh0PSIzMiIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkE1IiBzPSIxMyIgdD0ic3RyIj48eDp2PlNhbGRvIHBlbmRpZW50ZSAoQ0xQKTwveDp2PjwveDpjPjx4OmMgcj0iQjUiIHM9IjEzIiAvPjx4OmMgcj0iQzUiIHM9IjEzIiAvPjx4OmMgcj0iRDUiIHM9IjM5IiB0PSJuIj48eDpmPk1BWChEMjgsMCk8L3g6Zj48eDp2PjA8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSI2IiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBNiIgcz0iMiIgdD0ic3RyIj48eDp2PlBhZ2FkbyBkZSBtw6FzIChDTFApPC94OnY+PC94OmM+PHg6YyByPSJCNiIgcz0iMiIgLz48eDpjIHI9IkM2IiBzPSIyIiAvPjx4OmMgcj0iRDYiIHM9IjQwIiB0PSJuIj48eDpmPk1BWCgtRDI4LDApPC94OmY+PHg6dj4wPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iNyIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTciIHM9IjIiIC8+PHg6YyByPSJCNyIgcz0iMiIgLz48eDpjIHI9IkM3IiBzPSIyIiAvPjx4OmMgcj0iRDciIHM9IjIiIC8+PC94OnJvdz48eDpyb3cgcj0iOCIgaHQ9IjI4IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTgiIHM9IjE1IiB0PSJzdHIiPjx4OnY+VFJBQkFKTyBSRUFMSVpBRE88L3g6dj48L3g6Yz48eDpjIHI9IkI4IiBzPSIxNSIgLz48eDpjIHI9IkM4IiBzPSIxNSIgLz48eDpjIHI9IkQ4IiBzPSIxNSIgLz48L3g6cm93Pjx4OnJvdyByPSI5IiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBOSIgcz0iMTgiIHQ9InN0ciI+PHg6dj5UaXBvPC94OnY+PC94OmM+PHg6YyByPSJCOSIgcz0iMTgiIHQ9InN0ciI+PHg6dj5BbCBpbmljaW88L3g6dj48L3g6Yz48eDpjIHI9IkM5IiBzPSIxOCIgdD0ic3RyIj48eDp2PkFsIGZpbmFsPC94OnY+PC94OmM+PHg6YyByPSJEOSIgcz0iMTgiIHQ9InN0ciI+PHg6dj5SZWFsaXphZGFzPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMTAiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkExMCIgcz0iMiIgdD0ic3RyIj48eDp2Pkd1w61hczwveDp2PjwveDpjPjx4OmMgcj0iQjEwIiBzPSIzNiIgdD0ibiI+PHg6dj4wPC94OnY+PC94OmM+PHg6YyByPSJDMTAiIHM9IjM2IiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48eDpjIHI9IkQxMCIgcz0iMzciIHQ9Im4iPjx4OmY+QzEwLUIxMDwveDpmPjx4OnY+MDwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjExIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMTEiIHM9IjIiIHQ9InN0ciI+PHg6dj5PVDwveDp2PjwveDpjPjx4OmMgcj0iQjExIiBzPSIzNiIgdD0ibiI+PHg6dj4wPC94OnY+PC94OmM+PHg6YyByPSJDMTEiIHM9IjM2IiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48eDpjIHI9IkQxMSIgcz0iMzciIHQ9Im4iPjx4OmY+QzExLUIxMTwveDpmPjx4OnY+MDwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjEyIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMTIiIHM9IjIiIHQ9InN0ciI+PHg6dj5GYWN0dXJhczwveDp2PjwveDpjPjx4OmMgcj0iQjEyIiBzPSIzNiIgdD0ibiI+PHg6dj4wPC94OnY+PC94OmM+PHg6YyByPSJDMTIiIHM9IjM2IiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48eDpjIHI9IkQxMiIgcz0iMzciIHQ9Im4iPjx4OmY+QzEyLUIxMjwveDpmPjx4OnY+MDwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjEzIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMTMiIHM9IjIiIHQ9InN0ciI+PHg6dj5Cb2xldGFzPC94OnY+PC94OmM+PHg6YyByPSJCMTMiIHM9IjM2IiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48eDpjIHI9IkMxMyIgcz0iMzYiIHQ9Im4iPjx4OnY+MDwveDp2PjwveDpjPjx4OmMgcj0iRDEzIiBzPSIzNyIgdD0ibiI+PHg6Zj5DMTMtQjEzPC94OmY+PHg6dj4wPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMTQiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkExNCIgcz0iMiIgdD0ic3RyIj48eDp2Pk5vdGFzIGRlIGNyw6lkaXRvPC94OnY+PC94OmM+PHg6YyByPSJCMTQiIHM9IjM2IiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48eDpjIHI9IkMxNCIgcz0iMzYiIHQ9Im4iPjx4OnY+MDwveDp2PjwveDpjPjx4OmMgcj0iRDE0IiBzPSIzNyIgdD0ibiI+PHg6Zj5DMTQtQjE0PC94OmY+PHg6dj4wPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMTUiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkExNSIgcz0iMjAiIHQ9InN0ciI+PHg6dj5Ub3RhbCByZWFsaXphZGFzPC94OnY+PC94OmM+PHg6YyByPSJCMTUiIHM9IjM4IiAvPjx4OmMgcj0iQzE1IiBzPSIzOCIgLz48eDpjIHI9IkQxNSIgcz0iMzgiIHQ9Im4iPjx4OmY+U1VNKEQxMDpEMTQpPC94OmY+PHg6dj4wPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMTYiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkExNiIgcz0iMiIgLz48eDpjIHI9IkIxNiIgcz0iMiIgLz48eDpjIHI9IkMxNiIgcz0iMiIgLz48eDpjIHI9IkQxNiIgcz0iMiIgLz48L3g6cm93Pjx4OnJvdyByPSIxNyIgaHQ9IjI4IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTE3IiBzPSIxNSIgdD0ic3RyIj48eDp2PkNPTkRJQ0lPTkVTIERFIFBBR088L3g6dj48L3g6Yz48eDpjIHI9IkIxNyIgcz0iMTUiIC8+PHg6YyByPSJDMTciIHM9IjE1IiAvPjx4OmMgcj0iRDE3IiBzPSIxNSIgLz48L3g6cm93Pjx4OnJvdyByPSIxOCIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTE4IiBzPSIyIiB0PSJzdHIiPjx4OnY+TW9kYWxpZGFkPC94OnY+PC94OmM+PHg6YyByPSJCMTgiIHM9IjIiIC8+PHg6YyByPSJDMTgiIHM9IjIiIC8+PHg6YyByPSJEMTgiIHM9IjI4IiB0PSJzdHIiPjx4OnY+UHJvcG9yY2lvbmFsPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMTkiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkExOSIgcz0iMiIgdD0ic3RyIj48eDp2PlJlYWxpemFkYXMgcG9yIGJsb3F1ZTwveDp2PjwveDpjPjx4OmMgcj0iQjE5IiBzPSIyIiAvPjx4OmMgcj0iQzE5IiBzPSIyIiAvPjx4OmMgcj0iRDE5IiBzPSIzNiIgdD0ibiI+PHg6dj40MDwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjIwIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMjAiIHM9IjIiIHQ9InN0ciI+PHg6dj5QYWdvIHBvciBibG9xdWUgKENMUCk8L3g6dj48L3g6Yz48eDpjIHI9IkIyMCIgcz0iMiIgLz48eDpjIHI9IkMyMCIgcz0iMiIgLz48eDpjIHI9IkQyMCIgcz0iNDEiIHQ9Im4iPjx4OnY+MTAwMDA8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSIyMSIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTIxIiBzPSIyIiB0PSJzdHIiPjx4OnY+UGFnbyBwb3IgdW5pZGFkIChDTFApPC94OnY+PC94OmM+PHg6YyByPSJCMjEiIHM9IjIiIC8+PHg6YyByPSJDMjEiIHM9IjIiIC8+PHg6YyByPSJEMjEiIHM9IjQwIiB0PSJuIj48eDpmPkQyMC9EMTk8L3g6Zj48eDp2PjI1MDwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjIyIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMjIiIHM9IjIiIHQ9InN0ciI+PHg6dj5CbG9xdWVzIGNvbXBsZXRvczwveDp2PjwveDpjPjx4OmMgcj0iQjIyIiBzPSIyIiAvPjx4OmMgcj0iQzIyIiBzPSIyIiAvPjx4OmMgcj0iRDIyIiBzPSIzNyIgdD0ibiI+PHg6Zj5JTlQoRDE1L0QxOSk8L3g6Zj48eDp2PjA8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSIyMyIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTIzIiBzPSIyIiB0PSJzdHIiPjx4OnY+RW4gZWwgYmxvcXVlIGluY29tcGxldG88L3g6dj48L3g6Yz48eDpjIHI9IkIyMyIgcz0iMiIgLz48eDpjIHI9IkMyMyIgcz0iMiIgLz48eDpjIHI9IkQyMyIgcz0iMzciIHQ9Im4iPjx4OmY+TU9EKEQxNSxEMTkpPC94OmY+PHg6dj4wPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMjQiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkEyNCIgcz0iMiIgLz48eDpjIHI9IkIyNCIgcz0iMiIgLz48eDpjIHI9IkMyNCIgcz0iMiIgLz48eDpjIHI9IkQyNCIgcz0iMiIgLz48L3g6cm93Pjx4OnJvdyByPSIyNSIgaHQ9IjI4IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTI1IiBzPSIxNSIgdD0ic3RyIj48eDp2PkRFVEFMTEUgREVMIFBBR088L3g6dj48L3g6Yz48eDpjIHI9IkIyNSIgcz0iMTUiIC8+PHg6YyByPSJDMjUiIHM9IjE1IiAvPjx4OmMgcj0iRDI1IiBzPSIxNSIgLz48L3g6cm93Pjx4OnJvdyByPSIyNiIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTI2IiBzPSIyIiB0PSJzdHIiPjx4OnY+UGFnbyB0b3RhbCBnZW5lcmFkbyAoQ0xQKTwveDp2PjwveDpjPjx4OmMgcj0iQjI2IiBzPSIyIiAvPjx4OmMgcj0iQzI2IiBzPSIyIiAvPjx4OmMgcj0iRDI2IiBzPSI0MCIgdD0ibiI+PHg6Zj5JRihEMTg9IkJsb3F1ZXMgZGUgNDAiLEQyMipEMjAsRDE1KkQyMSk8L3g6Zj48eDp2PjA8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSIyNyIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTI3IiBzPSIyIiB0PSJzdHIiPjx4OnY+WWEgcGFnYWRvIChDTFApPC94OnY+PC94OmM+PHg6YyByPSJCMjciIHM9IjIiIC8+PHg6YyByPSJDMjciIHM9IjIiIC8+PHg6YyByPSJEMjciIHM9IjQxIiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSIyOCIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTI4IiBzPSIyMCIgdD0ic3RyIj48eDp2PlNhbGRvOiB0b3RhbCBtZW5vcyB5YSBwYWdhZG8gKENMUCk8L3g6dj48L3g6Yz48eDpjIHI9IkIyOCIgcz0iMjAiIC8+PHg6YyByPSJDMjgiIHM9IjIwIiAvPjx4OmMgcj0iRDI4IiBzPSI0MiIgdD0ibiI+PHg6Zj5EMjYtRDI3PC94OmY+PHg6dj4wPC94OnY+PC94OmM+PC94OnJvdz48eDpyb3cgcj0iMjkiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkEyOSIgcz0iMiIgLz48eDpjIHI9IkIyOSIgcz0iMiIgLz48eDpjIHI9IkMyOSIgcz0iMiIgLz48eDpjIHI9IkQyOSIgcz0iMiIgLz48L3g6cm93Pjx4OnJvdyByPSIzMCIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTMwIiBzPSI3IiB0PSJzdHIiPjx4OnY+Q2VsZGFzIGFtYXJpbGxhczogZGF0b3MgZWRpdGFibGVzLjwveDp2PjwveDpjPjx4OmMgcj0iQjMwIiBzPSIyIiAvPjx4OmMgcj0iQzMwIiBzPSIyIiAvPjx4OmMgcj0iRDMwIiBzPSIyIiAvPjwveDpyb3c+PHg6cm93IHI9IjMxIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMzEiIHM9IjciIHQ9InN0ciI+PHg6dj7Dmmx0aW1hIGFjdHVhbGl6YWNpw7NuIChDaGlsZSk8L3g6dj48L3g6Yz48eDpjIHI9IkIzMSIgcz0iNyIgLz48eDpjIHI9IkMzMSIgcz0iNyIgLz48eDpjIHI9IkQzMSIgcz0iMjEiIHQ9InN0ciI+PHg6dj5TaW4gZ3VhcmRhcjwveDp2PjwveDpjPjwveDpyb3c+PHg6cm93IHI9IjMyIiBodD0iMjQiIGN1c3RvbUhlaWdodD0iMSI+PHg6YyByPSJBMzIiIHM9IjIiIC8+PHg6YyByPSJCMzIiIHM9IjIiIC8+PHg6YyByPSJDMzIiIHM9IjIiIC8+PHg6YyByPSJEMzIiIHM9IjIiIC8+PC94OnJvdz48eDpyb3cgcj0iMzMiIGh0PSIyOCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkEzMyIgcz0iMTUiIHQ9InN0ciI+PHg6dj5TRUdVSU1JRU5UTyBERSBHVcONQVM8L3g6dj48L3g6Yz48eDpjIHI9IkIzMyIgcz0iMTUiIC8+PHg6YyByPSJDMzMiIHM9IjE1IiAvPjx4OmMgcj0iRDMzIiBzPSIxNSIgLz48L3g6cm93Pjx4OnJvdyByPSIzNCIgaHQ9IjQyIiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTM0IiBzPSIyMyIgdD0ic3RyIj48eDp2Pkd1w61hcyBoZWNoYXMgZGVzZGUgcXVlIGVtcGVjw6kKYSBoYWNlciBmYWN0dXJhczwveDp2PjwveDpjPjx4OmMgcj0iQjM0IiBzPSIxMiIgLz48eDpjIHI9IkMzNCIgcz0iMTIiIC8+PHg6YyByPSJEMzQiIHM9IjI2IiB0PSJuIj48eDp2PjA8L3g6dj48L3g6Yz48L3g6cm93Pjx4OnJvdyByPSIzNSIgaHQ9IjI0IiBjdXN0b21IZWlnaHQ9IjEiPjx4OmMgcj0iQTM1IiBzPSIyNyIgdD0ic3RyIj48eDp2PkVzdGFzIGd1w61hcyB5YSBlc3TDoW4gaW5jbHVpZGFzIGVuIGVsIHRvdGFsIGRlIGd1w61hcyB5IGVuIGVsIHBhZ28uPC94OnY+PC94OmM+PHg6YyByPSJCMzUiIHM9IjI3IiAvPjx4OmMgcj0iQzM1IiBzPSIyNyIgLz48eDpjIHI9IkQzNSIgcz0iMjciIC8+PC94OnJvdz48eDpyb3cgcj0iMzYiIGh0PSIyNCIgY3VzdG9tSGVpZ2h0PSIxIj48eDpjIHI9IkEzNiIgcz0iMiIgLz48eDpjIHI9IkIzNiIgcz0iMiIgLz48eDpjIHI9IkMzNiIgcz0iMiIgLz48eDpjIHI9IkQzNiIgcz0iMiIgLz48L3g6cm93PjwveDpzaGVldERhdGE+PHg6Y29uZGl0aW9uYWxGb3JtYXR0aW5nIHNxcmVmPSJENjpENiI+PHg6Y2ZSdWxlIHR5cGU9ImNlbGxJcyIgZHhmSWQ9IjAiIHByaW9yaXR5PSIxIiBvcGVyYXRvcj0iZ3JlYXRlclRoYW4iPjx4OmZvcm11bGE+MDwveDpmb3JtdWxhPjwveDpjZlJ1bGU+PC94OmNvbmRpdGlvbmFsRm9ybWF0dGluZz48eDpkYXRhVmFsaWRhdGlvbnMgY291bnQ9IjUiPjx4OmRhdGFWYWxpZGF0aW9uIHR5cGU9Imxpc3QiIHNxcmVmPSJEMTgiPjx4OmZvcm11bGExPiJQcm9wb3JjaW9uYWwsQmxvcXVlcyBkZSA0MCI8L3g6Zm9ybXVsYTE+PC94OmRhdGFWYWxpZGF0aW9uPjx4OmRhdGFWYWxpZGF0aW9uIHR5cGU9Indob2xlIiBvcGVyYXRvcj0iYmV0d2VlbiIgc3FyZWY9IkIxMDpDMTQiPjx4OmZvcm11bGExPjA8L3g6Zm9ybXVsYTE+PHg6Zm9ybXVsYTI+MTAwMDAwMDAwMDwveDpmb3JtdWxhMj48L3g6ZGF0YVZhbGlkYXRpb24+PHg6ZGF0YVZhbGlkYXRpb24gdHlwZT0id2hvbGUiIG9wZXJhdG9yPSJiZXR3ZWVuIiBzcXJlZj0iRDE5Ij48eDpmb3JtdWxhMT4xPC94OmZvcm11bGExPjx4OmZvcm11bGEyPjEwMDAwMDAwMDA8L3g6Zm9ybXVsYTI+PC94OmRhdGFWYWxpZGF0aW9uPjx4OmRhdGFWYWxpZGF0aW9uIHR5cGU9Indob2xlIiBvcGVyYXRvcj0iYmV0d2VlbiIgc3FyZWY9IkQyMCI+PHg6Zm9ybXVsYTE+MDwveDpmb3JtdWxhMT48eDpmb3JtdWxhMj4xMDAwMDAwMDAwMDAwPC94OmZvcm11bGEyPjwveDpkYXRhVmFsaWRhdGlvbj48eDpkYXRhVmFsaWRhdGlvbiB0eXBlPSJ3aG9sZSIgb3BlcmF0b3I9ImJldHdlZW4iIHNxcmVmPSJEMjciPjx4OmZvcm11bGExPjA8L3g6Zm9ybXVsYTE+PHg6Zm9ybXVsYTI+MTAwMDAwMDAwMDAwMDwveDpmb3JtdWxhMj48L3g6ZGF0YVZhbGlkYXRpb24+PC94OmRhdGFWYWxpZGF0aW9ucz48eDpwYWdlTWFyZ2lucyBsZWZ0PSIwLjciIHJpZ2h0PSIwLjciIHRvcD0iMC43NSIgYm90dG9tPSIwLjc1IiBoZWFkZXI9IjAuMyIgZm9vdGVyPSIwLjMiIC8+PC94OndvcmtzaGVldD4="},{"name":"_rels/.rels","data":"77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48UmVsYXRpb25zaGlwcyB4bWxucz0iaHR0cDovL3NjaGVtYXMub3BlbnhtbGZvcm1hdHMub3JnL3BhY2thZ2UvMjAwNi9yZWxhdGlvbnNoaXBzIj48UmVsYXRpb25zaGlwIFR5cGU9Imh0dHA6Ly9zY2hlbWFzLm9wZW54bWxmb3JtYXRzLm9yZy9vZmZpY2VEb2N1bWVudC8yMDA2L3JlbGF0aW9uc2hpcHMvb2ZmaWNlRG9jdW1lbnQiIFRhcmdldD0iL3hsL3dvcmtib29rLnhtbCIgSWQ9IlIyNGJlYzUyMmJjYTQ0NTRkIiAvPjwvUmVsYXRpb25zaGlwcz4="},{"name":"xl/_rels/workbook.xml.rels","data":"77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48UmVsYXRpb25zaGlwcyB4bWxucz0iaHR0cDovL3NjaGVtYXMub3BlbnhtbGZvcm1hdHMub3JnL3BhY2thZ2UvMjAwNi9yZWxhdGlvbnNoaXBzIj48UmVsYXRpb25zaGlwIFR5cGU9Imh0dHA6Ly9zY2hlbWFzLm9wZW54bWxmb3JtYXRzLm9yZy9vZmZpY2VEb2N1bWVudC8yMDA2L3JlbGF0aW9uc2hpcHMvc3R5bGVzIiBUYXJnZXQ9Ii94bC9zdHlsZXMueG1sIiBJZD0iUjUxNGUxYjcxOTJjZjRhZWQiIC8+PFJlbGF0aW9uc2hpcCBUeXBlPSJodHRwOi8vc2NoZW1hcy5vcGVueG1sZm9ybWF0cy5vcmcvb2ZmaWNlRG9jdW1lbnQvMjAwNi9yZWxhdGlvbnNoaXBzL3RoZW1lIiBUYXJnZXQ9Ii94bC90aGVtZS90aGVtZTEueG1sIiBJZD0iUmM3ZmJhZWRhNTA5NjRjMDIiIC8+PFJlbGF0aW9uc2hpcCBUeXBlPSJodHRwOi8vc2NoZW1hcy5vcGVueG1sZm9ybWF0cy5vcmcvb2ZmaWNlRG9jdW1lbnQvMjAwNi9yZWxhdGlvbnNoaXBzL3NoYXJlZFN0cmluZ3MiIFRhcmdldD0iL3hsL3NoYXJlZFN0cmluZ3MueG1sIiBJZD0iUjc3NjA0MjYxY2JhMzQ1YTIiIC8+PFJlbGF0aW9uc2hpcCBUeXBlPSJodHRwOi8vc2NoZW1hcy5vcGVueG1sZm9ybWF0cy5vcmcvb2ZmaWNlRG9jdW1lbnQvMjAwNi9yZWxhdGlvbnNoaXBzL3dvcmtzaGVldCIgVGFyZ2V0PSIveGwvd29ya3NoZWV0cy9zaGVldDEueG1sIiBJZD0iUmI4MDFmYmI0MTE3NTQ3YzgiIC8+PC9SZWxhdGlvbnNoaXBzPg=="},{"name":"[Content_Types].xml","data":"77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48VHlwZXMgeG1sbnM9Imh0dHA6Ly9zY2hlbWFzLm9wZW54bWxmb3JtYXRzLm9yZy9wYWNrYWdlLzIwMDYvY29udGVudC10eXBlcyI+PERlZmF1bHQgRXh0ZW5zaW9uPSJ4bWwiIENvbnRlbnRUeXBlPSJhcHBsaWNhdGlvbi92bmQub3BlbnhtbGZvcm1hdHMtb2ZmaWNlZG9jdW1lbnQuc3ByZWFkc2hlZXRtbC5zaGVldC5tYWluK3htbCIgLz48RGVmYXVsdCBFeHRlbnNpb249InJlbHMiIENvbnRlbnRUeXBlPSJhcHBsaWNhdGlvbi92bmQub3BlbnhtbGZvcm1hdHMtcGFja2FnZS5yZWxhdGlvbnNoaXBzK3htbCIgLz48T3ZlcnJpZGUgUGFydE5hbWU9Ii94bC9zdHlsZXMueG1sIiBDb250ZW50VHlwZT0iYXBwbGljYXRpb24vdm5kLm9wZW54bWxmb3JtYXRzLW9mZmljZWRvY3VtZW50LnNwcmVhZHNoZWV0bWwuc3R5bGVzK3htbCIgLz48T3ZlcnJpZGUgUGFydE5hbWU9Ii94bC90aGVtZS90aGVtZTEueG1sIiBDb250ZW50VHlwZT0iYXBwbGljYXRpb24vdm5kLm9wZW54bWxmb3JtYXRzLW9mZmljZWRvY3VtZW50LnRoZW1lK3htbCIgLz48T3ZlcnJpZGUgUGFydE5hbWU9Ii94bC9zaGFyZWRTdHJpbmdzLnhtbCIgQ29udGVudFR5cGU9ImFwcGxpY2F0aW9uL3ZuZC5vcGVueG1sZm9ybWF0cy1vZmZpY2Vkb2N1bWVudC5zcHJlYWRzaGVldG1sLnNoYXJlZFN0cmluZ3MreG1sIiAvPjxPdmVycmlkZSBQYXJ0TmFtZT0iL3hsL3dvcmtzaGVldHMvc2hlZXQxLnhtbCIgQ29udGVudFR5cGU9ImFwcGxpY2F0aW9uL3ZuZC5vcGVueG1sZm9ybWF0cy1vZmZpY2Vkb2N1bWVudC5zcHJlYWRzaGVldG1sLndvcmtzaGVldCt4bWwiIC8+PC9UeXBlcz4="}]/* EXCEL_TEMPLATE_END */;
+    const CRC_TABLE = Uint32Array.from({ length: 256 }, (_, index) => {
+      let crc = index;
+      for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+      return crc >>> 0;
+    });
+    function crc32(bytes) {
+      let crc = 0xffffffff;
+      for (const byte of bytes) crc = (crc >>> 8) ^ CRC_TABLE[(crc ^ byte) & 255];
+      return (crc ^ 0xffffffff) >>> 0;
+    }
+    // ZIP sin compresión para que la descarga funcione también en el HTML sin conexión.
+    function zipFiles(files) {
+      const encoder = new TextEncoder();
+      const localParts = [], centralParts = [];
+      let offset = 0, centralSize = 0;
+      for (const file of files) {
+        const name = encoder.encode(file.name), data = file.bytes, checksum = crc32(data);
+        const header = new Uint8Array(30 + name.length), h = new DataView(header.buffer);
+        h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x800, true); h.setUint16(12, 33, true);
+        h.setUint32(14, checksum, true); h.setUint32(18, data.length, true); h.setUint32(22, data.length, true); h.setUint16(26, name.length, true);
+        header.set(name, 30); localParts.push(header, data);
+        const central = new Uint8Array(46 + name.length), c = new DataView(central.buffer);
+        c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x800, true); c.setUint16(14, 33, true);
+        c.setUint32(16, checksum, true); c.setUint32(20, data.length, true); c.setUint32(24, data.length, true); c.setUint16(28, name.length, true); c.setUint32(42, offset, true);
+        central.set(name, 46); centralParts.push(central); centralSize += central.length;
+        offset += header.length + data.length;
+      }
+      const end = new Uint8Array(22), e = new DataView(end.buffer);
+      e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, centralSize, true); e.setUint32(16, offset, true);
+      const output = new Uint8Array(offset + centralSize + end.length);
+      let cursor = 0;
+      for (const part of [...localParts, ...centralParts, end]) { output.set(part, cursor); cursor += part.length; }
+      return output;
+    }
+    function replaceExcelValue(xml, address, value) {
+      const cellPattern = new RegExp('(<(?:\\w+:)?c\\b[^>]*\\br="' + address + '"[^>]*>)([\\s\\S]*?)(<\\/(?:\\w+:)?c>)');
+      if (!cellPattern.test(xml)) throw new Error('Falta la celda ' + address + ' en el resumen.');
+      const safe = String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+      return xml.replace(cellPattern, (_, start, body, end) => {
+        const valuePattern = /(<(?:\w+:)?v\b[^>]*>)[\s\S]*?(<\/(?:\w+:)?v>)/;
+        if (!valuePattern.test(body)) throw new Error('Falta el valor de ' + address + '.');
+        const typedStart = start.replace(/\bt="[^"]*"/, 't="' + (typeof value === 'number' ? 'n' : 'str') + '"');
+        return typedStart + body.replace(valuePattern, (_, open, close) => open + safe + close) + end;
+      });
+    }
+    function createExcel(values, mode, now = new Date(), updatedAt = null) {
+      const calculated = calculate(values, mode);
+      if (!calculated.valid) throw new Error('Revisa los valores antes de descargar.');
+      const dateParts = chileDateParts(now);
+      const excelDate = (Date.UTC(Number(dateParts.year), Number(dateParts.month) - 1, Number(dateParts.day), Number(dateParts.hour), Number(dateParts.minute), Number(dateParts.second)) - Date.UTC(1899, 11, 30)) / 86400000;
+      const cutoffSerial = (Date.parse(calculated.cutoffDate + 'T00:00:00Z') - Date.UTC(1899, 11, 30)) / 86400000 - (calculated.cutoffDate < '1900-03-01' ? 1 : 0);
+      const startSerial = (Date.parse(calculated.startDate + 'T00:00:00Z') - Date.UTC(1899, 11, 30)) / 86400000 - (calculated.startDate < '1900-03-01' ? 1 : 0);
+      const cells = {
+        D3: excelDate, B4: startSerial, D4: cutoffSerial,
+        B10: Number(values['guias-inicio']), C10: Number(values['guias-final']), B11: Number(values['ot-inicio']), C11: Number(values['ot-final']),
+        B12: Number(values['facturas-inicio']), C12: Number(values['facturas-final']), B13: Number(values['boletas-inicio']), C13: Number(values['boletas-final']),
+        B14: Number(values['notas-inicio']), C14: Number(values['notas-final']),
+        D5: calculated.pending, D6: calculated.overpaid, D10: calculated.guias, D11: calculated.ot, D12: calculated.facturas, D13: calculated.boletas, D14: calculated.notas, D15: calculated.total,
+        D18: mode === 'bloques' ? 'Bloques de 40' : 'Proporcional', D19: BLOCK_SIZE, D20: BLOCK_PAY, D21: BLOCK_PAY / BLOCK_SIZE,
+        D22: calculated.blocks, D23: calculated.remainder, D26: calculated.pay, D27: calculated.paid, D28: calculated.balance,
+        D31: 'Sin guardar', D34: calculated.laterGuides,
+      };
+      if (updatedAt && Number.isFinite(Date.parse(updatedAt))) {
+        const stamp = chileDateParts(new Date(updatedAt));
+        cells.D31 = (Date.UTC(Number(stamp.year), Number(stamp.month) - 1, Number(stamp.day), Number(stamp.hour), Number(stamp.minute), Number(stamp.second)) - Date.UTC(1899, 11, 30)) / 86400000;
+      }
+      const encoder = new TextEncoder(), decoder = new TextDecoder();
+      const files = EXCEL_TEMPLATE_PARTS.map(file => {
+        let bytes = Uint8Array.from(atob(file.data), character => character.charCodeAt(0));
+        if (file.name === 'xl/worksheets/sheet1.xml') {
+          let xml = decoder.decode(bytes);
+          for (const [address, value] of Object.entries(cells)) xml = replaceExcelValue(xml, address, value);
+          bytes = encoder.encode(xml);
+        }
+        return { name: file.name, bytes };
+      });
+      if (!files.length) throw new Error('La plantilla de Excel no está disponible.');
+      return { bytes: zipFiles(files), filename: 'resumen-trabajos-' + calculated.startDate + '_al_' + calculated.cutoffDate + '-' + dateParts.hour + dateParts.minute + dateParts.second + '.xlsx' };
+    }
+
+    // Aplicación en línea: el registro se guarda en Firebase (Firestore).
+    // Cualquiera puede verlo; solo el usuario autorizado en las reglas de Firestore puede guardarlo.
+    const FIREBASE_VERSION = '13.0.0';
+    const FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyCf_4NG8azgHewuLZwhB44VOr55SguNBdI',
+      authDomain: 'cuenta-local.firebaseapp.com',
+      projectId: 'cuenta-local',
+      storageBucket: 'cuenta-local.firebasestorage.app',
+      messagingSenderId: '9765809524',
+      appId: '1:9765809524:web:3d3acd4bb6d9a795179021'
+    };
+    const byId = id => document.getElementById(id);
+    const form = byId('calculator');
+    const number = new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 });
+    const money = value => '$' + number.format(value);
+    const showCount = value => value === null ? '—' : number.format(value);
+    // Solo se usan para traer a la nube los datos que estaban guardados en este navegador.
+    const STORAGE_KEY = 'cuenta-trabajos-local-v1';
+    const LEGACY_STORAGE_KEY = 'cuenta-guias-ot-v1';
+    let result, liveTimer, toastTimer;
+    let canEdit = false, dirty = false, saving = false, loaded = false, remoteExists = false;
+    let revision = 0, lastUpdated = null, savedRecord = null, remoteRecord = null;
+    let initialRecord = null, currentUser = null, fb = null;
+    const values = () => Object.fromEntries(INPUTS.map(id => [id, byId(id).value]));
+    const mode = () => form.querySelector('input[name="mode"]:checked').value;
+    const exportReady = () => result?.valid && !dirty;
+
+    function updatedLabel() {
+      if (!loaded) return 'Conectando con la nube…';
+      if (!lastUpdated || !Number.isFinite(Date.parse(lastUpdated))) return 'Sin registro guardado';
+      return new Intl.DateTimeFormat('es-CL', { timeZone: 'America/Santiago', dateStyle: 'short', timeStyle: 'medium' }).format(new Date(lastUpdated)) + ' (Chile)';
+    }
+    function applyValues(stored) {
+      if (!stored || typeof stored !== 'object') return;
+      for (const id of INPUTS) if (typeof stored.values?.[id] === 'string') byId(id).value = stored.values[id];
+      if (stored.values?.['guias-post-facturas'] === undefined) byId('guias-post-facturas').value = '0';
+      for (const id of ['notas-inicio', 'notas-final']) if (typeof stored.values?.[id] !== 'string') byId(id).value = '0';
+      if (typeof stored.values?.['from-date'] !== 'string' && validCutoffDate(byId('cutoff-date').value)) byId('from-date').value = byId('cutoff-date').value;
+      if (['proporcional','bloques'].includes(stored.mode)) form.querySelector('input[value="' + stored.mode + '"]').checked = true;
+    }
+    function includeEarlierStageGuides(record) {
+      if (!record?.values || record.guideTotalsVersion === 2) return record;
+      // Las versiones anteriores guardaban este contador aparte del final.
+      // La marca impide volver a sumarlo al guardar, recargar o abrir una copia.
+      const final = Number(record.values['guias-final']);
+      const later = Number(record.values['guias-post-facturas'] || 0);
+      if (!Number.isSafeInteger(final) || !Number.isSafeInteger(later) || final < 0 || later < 0) return record;
+      return { ...record, guideTotalsVersion: 2, values: { ...record.values, 'guias-final': String(final + later) } };
+    }
+    // Los registros anteriores a las notas de crédito las cuentan como 0.
+    const withNewCounters = record => record && typeof record.values === 'object' && record.values ? { ...record, values: { 'notas-inicio': '0', 'notas-final': '0', ...record.values } } : record;
+    const normalizeRecord = record => includeEarlierStageGuides(withNewCounters(record));
+    const validRecord = record => record && typeof record.values === 'object' && record.values && ['proporcional','bloques'].includes(record.mode) && calculate(record.values, record.mode).valid;
+    function acceptRecord(record) {
+      record = normalizeRecord(record);
+      savedRecord = record;
+      if (record) applyValues(record);
+      revision = Number.isSafeInteger(record?.revision) ? record.revision : 0;
+      lastUpdated = record?.updatedAt && Number.isFinite(Date.parse(record.updatedAt)) ? record.updatedAt : null;
+      dirty = false;
+    }
+    function showError(message = '') {
+      byId('access-error').textContent = message; byId('access-error').hidden = !message;
+    }
+    function syncAccess() {
+      const editable = canEdit && loaded && !saving;
+      byId('edit-fields').disabled = !editable;
+      const count = Number(byId('guias-post-facturas').value);
+      const finalRaw = byId('guias-final').value.trim();
+      const final = Number(finalRaw);
+      const validFinal = /^\d+$/.test(finalRaw) && Number.isSafeInteger(final) && !byId('guias-final').validity.badInput;
+      byId('stage-counter-total').textContent = Number.isSafeInteger(count) && count >= 0 ? number.format(count) : '—';
+      byId('add-stage-guide').disabled = !editable || !Number.isSafeInteger(count) || count < 0 || count >= 1000000000 || !validFinal || final >= 1000000000;
+      byId('stage-counter-help').textContent = canEdit ? (!validFinal ? 'Completa Guías al final con un número válido para sumar.' : count >= 1000000000 || final >= 1000000000 ? 'Alcanzaste el máximo de guías para este contador.' : 'Cada +1 aumenta Guías al final. Pulsa Guardar cambios para confirmar.') : 'Inicia sesión como administrador para sumar guías.';
+      byId('access-title').textContent = canEdit ? 'Administrador · ' + (currentUser?.email || '') : 'Modo consulta';
+      byId('updated-at').textContent = updatedLabel();
+      if (loaded && lastUpdated) byId('updated-at').setAttribute('datetime', lastUpdated);
+      else byId('updated-at').removeAttribute('datetime');
+      byId('login-button').hidden = canEdit; byId('login-button').disabled = !fb;
+      byId('login-button').textContent = 'Iniciar sesión';
+      byId('save-button').hidden = byId('logout-button').hidden = !canEdit;
+      byId('save-button').disabled = !dirty || !result?.valid || saving || !loaded;
+      byId('logout-button').disabled = saving;
+      byId('save-button').textContent = saving ? 'Guardando…' : 'Guardar cambios';
+      byId('save-text').textContent = dirty ? 'Cambios sin guardar' : !loaded ? 'Conectando…' : lastUpdated && remoteExists ? 'Guardado en la nube' : 'Sin registro guardado';
+      byId('access-hint').textContent = canEdit ? (dirty ? 'Tienes cambios pendientes. Pulsa Guardar cambios para subirlos a la nube.' : 'Sesión iniciada. Puedes editar los datos y sumar guías.') : 'Inicia sesión con tu correo y contraseña para editar.';
+      byId('copy-button').disabled = byId('excel-button').disabled = !exportReady();
+      byId('download').setAttribute('aria-disabled', String(!result?.valid));
+      byId('download-note').textContent = dirty ? 'Guarda los cambios para descargar el resumen en Excel.' : 'Excel con el período, los valores y la última actualización.';
+    }
+    function render() {
+      const current = values();
+      for (const id of INPUTS) if (byId(id).validity.badInput) current[id] = 'invalid';
+      result = calculate(current, mode());
+      for (const id of INPUTS) {
+        byId(id + '-error').textContent = result.errors[id] || '';
+        byId(id).setAttribute('aria-invalid', String(Boolean(result.errors[id])));
+      }
+      for (const type of TYPES) byId(type + '-count').textContent = byId(type + '-result').textContent = showCount(result[type]);
+      byId('cutoff-result').textContent = !result.errors['from-date'] && !result.errors['cutoff-date'] ? 'Desde el ' + formatCutoffDate(current['from-date']) + ' hasta el ' + formatCutoffDate(current['cutoff-date']) : 'Revisa las fechas Desde y Hasta';
+      byId('overpayment').hidden = true;
+      byId('formula').textContent = mode() === 'bloques' ? '(Bloques completos × $10.000) − ya pagado = saldo.' : '(Total × $10.000 ÷ 40) − ya pagado = saldo.';
+      let announcement;
+      if (!result.valid) {
+        byId('amount').textContent = '—';
+        byId('total').textContent = '—';
+        byId('gross-pay').textContent = byId('paid-result').textContent = '—';
+        byId('pay-explanation').textContent = 'Revisa los valores para calcular el saldo.';
+        byId('block-heading').textContent = 'Próximo bloque de 40';
+        byId('progress-count').textContent = '— / 40';
+        byId('progress-fill').style.width = '0%';
+        byId('progress').removeAttribute('aria-valuenow');
+        byId('progress').setAttribute('aria-valuetext', 'Pendiente de valores válidos');
+        byId('progress-caption').textContent = 'Revisa los contadores, las fechas Desde y Hasta y el monto ya pagado.';
+        announcement = 'Revisa los valores. Hay datos incompletos o incorrectos.';
+      } else {
+        byId('amount').textContent = money(result.pending);
+        byId('gross-pay').textContent = money(result.pay);
+        byId('paid-result').textContent = money(result.paid);
+        if (result.overpaid > 0) {
+          byId('overpayment').hidden = false;
+          byId('overpayment').textContent = 'Pagado de más: ' + money(result.overpaid) + '. El monto registrado supera el pago total.';
+        }
+        byId('total').textContent = number.format(result.total);
+        byId('pay-explanation').textContent = result.mode === 'bloques' ? number.format(result.blocks) + (result.blocks === 1 ? ' bloque completo' : ' bloques completos') + ' × $10.000' : number.format(result.total) + (result.total === 1 ? ' realizada' : ' realizadas') + ' × $250 por unidad';
+        const exactBlock = result.total > 0 && result.remainder === 0;
+        const progressValue = exactBlock ? BLOCK_SIZE : result.remainder;
+        byId('block-heading').textContent = exactBlock ? 'Bloque de 40 completado' : 'Próximo bloque de 40';
+        byId('progress-count').textContent = progressValue + ' / 40';
+        byId('progress-fill').style.width = (progressValue / BLOCK_SIZE * 100) + '%';
+        byId('progress').setAttribute('aria-valuenow', String(progressValue));
+        byId('progress').setAttribute('aria-valuetext', exactBlock ? 'Bloque completo. Faltan 40 para el siguiente.' : progressValue + ' de 40 en el bloque actual.');
+        let caption = exactBlock ? 'Llevas ' + number.format(result.blocks) + (result.blocks === 1 ? ' bloque completo. ' : ' bloques completos. ') + 'El siguiente se completa con 40 más.' : 'Falta' + (result.remaining === 1 ? ' 1 realizada' : 'n ' + result.remaining + ' realizadas') + ' para completar ' + (result.total < 40 ? 'un bloque.' : 'el siguiente bloque.');
+        if (result.mode === 'bloques' && result.remainder > 0) caption += ' Quedan ' + result.remainder + ' fuera del pago por ahora.';
+        byId('progress-caption').textContent = caption;
+        announcement = 'Desde el ' + formatCutoffDate(result.startDate) + ' hasta el ' + formatCutoffDate(result.cutoffDate) + '. ' + number.format(result.total) + ' realizadas. Pago total: ' + money(result.pay) + '. Ya pagado: ' + money(result.paid) + '. Saldo pendiente: ' + money(result.pending) + ' pesos.' + (result.overpaid > 0 ? ' Pagado de más: ' + money(result.overpaid) + ' pesos.' : '');
+      }
+      syncAccess();
+      clearTimeout(liveTimer);
+      liveTimer = setTimeout(() => { byId('live-result').textContent = announcement; }, 450);
+    }
+    function toast(text) {
+      byId('toast').textContent = text; byId('toast').classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(() => byId('toast').classList.remove('show'), 2800);
+    }
+    function changed() { if (!canEdit || saving || !loaded) return; dirty = true; render(); }
+    function discardChanges() { acceptRecord(remoteRecord || savedRecord || initialRecord); }
+    function firebaseMessage(error, fallback) {
+      const code = error?.code || error?.message || '';
+      if (code === 'conflict') return 'Se guardaron cambios desde otro dispositivo mientras editabas. Recarga la página para ver la última versión y vuelve a hacer tus cambios.';
+      if (/invalid-credential|wrong-password|user-not-found|invalid-email|invalid-login/.test(code)) return 'Correo o contraseña incorrectos.';
+      if (/too-many-requests/.test(code)) return 'Demasiados intentos. Espera unos minutos y vuelve a intentar.';
+      if (/network|unavailable|offline/.test(code)) return 'No hay conexión con la nube. Revisa tu internet e intenta de nuevo.';
+      if (/permission-denied/.test(code)) return 'Tu usuario no tiene permiso para guardar. Revisa la regla de seguridad de Firestore.';
+      return fallback + (code ? ' (' + code + ')' : '');
+    }
+
+    form.addEventListener('submit', event => event.preventDefault());
+    form.addEventListener('input', changed); form.addEventListener('change', changed);
+    byId('add-stage-guide').addEventListener('click', () => {
+      if (!canEdit || saving || !loaded) return;
+      const count = Number(byId('guias-post-facturas').value);
+      if (!Number.isSafeInteger(count) || count < 0 || count >= 1000000000) return;
+      const finalRaw = byId('guias-final').value.trim();
+      const final = Number(finalRaw);
+      if (!/^\d+$/.test(finalRaw) || !Number.isSafeInteger(final) || final >= 1000000000 || byId('guias-final').validity.badInput) return;
+      byId('guias-post-facturas').value = String(count + 1);
+      byId('guias-final').value = String(final + 1);
+      changed();
+    });
+    window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
+    byId('login-button').addEventListener('click', () => {
+      if (!fb) return;
+      byId('login-error').textContent = ''; byId('editor-password').value = '';
+      byId('login-dialog').showModal(); byId('editor-email').focus();
+    });
+    byId('cancel-login').addEventListener('click', () => byId('login-dialog').close());
+    byId('login-dialog').addEventListener('close', () => { byId('editor-password').value = ''; });
+    byId('login-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!fb) return;
+      const email = byId('editor-email').value.trim();
+      const password = byId('editor-password').value;
+      byId('submit-login').disabled = true; byId('submit-login').textContent = 'Entrando…';
+      byId('login-error').textContent = '';
+      try {
+        await fb.auth.signInWithEmailAndPassword(fb.authInstance, email, password);
+        byId('editor-password').value = ''; byId('login-dialog').close(); showError();
+        toast('Sesión iniciada. Ya puedes editar.');
+      } catch (error) {
+        byId('login-error').textContent = firebaseMessage(error, 'No se pudo iniciar sesión.');
+        byId('editor-password').focus();
+      } finally {
+        byId('submit-login').disabled = false; byId('submit-login').textContent = 'Iniciar sesión';
+      }
+    });
+    byId('save-button').addEventListener('click', async () => {
+      if (!fb || !canEdit || !dirty || !result.valid || saving || !loaded) return;
+      saving = true; showError(); syncAccess();
+      const record = { guideTotalsVersion: 2, values: values(), mode: mode(), revision: revision + 1, updatedAt: new Date().toISOString() };
+      const expectedRevision = revision, expectedExists = remoteExists;
+      try {
+        await fb.store.runTransaction(fb.db, async transaction => {
+          const snap = await transaction.get(fb.ref);
+          // Evita pisar cambios guardados desde otro dispositivo mientras se editaba aquí.
+          if (snap.exists() !== expectedExists || (snap.exists() && (snap.data().revision ?? 0) !== expectedRevision)) throw new Error('conflict');
+          transaction.set(fb.ref, record);
+        });
+        remoteExists = true; remoteRecord = record; acceptRecord(record);
+        toast('Cambios guardados en la nube.');
+      } catch (error) {
+        showError(firebaseMessage(error, 'No se pudieron guardar los cambios.'));
+      } finally { saving = false; render(); }
+    });
+    byId('logout-button').addEventListener('click', async () => {
+      if (dirty && !window.confirm('Tienes cambios sin guardar. ¿Cerrar sesión y descartarlos?')) return;
+      discardChanges(); showError();
+      try { await fb.auth.signOut(fb.authInstance); toast('Sesión cerrada. Datos en modo consulta.'); }
+      catch (error) { showError(firebaseMessage(error, 'No se pudo cerrar la sesión.')); }
+      render();
+    });
+    byId('reset-button').addEventListener('click', () => { if (canEdit) byId('reset-dialog').showModal(); });
+    byId('cancel-reset').addEventListener('click', () => byId('reset-dialog').close());
+    byId('confirm-reset').addEventListener('click', () => {
+      if (!canEdit || saving) return;
+      for (const id of [...NUMBER_INPUTS, 'guias-post-facturas']) byId(id).value = '0';
+      changed(); byId('reset-dialog').close(); byId('guias-inicio').focus(); toast('Valores en cero. Guarda para confirmar.');
+    });
+    byId('copy-button').addEventListener('click', async () => {
+      if (!exportReady()) return;
+      const current = values();
+      const lines = ['RESUMEN DE TRABAJO Y PAGO', 'Desde: ' + formatCutoffDate(result.startDate), 'Hasta: ' + formatCutoffDate(result.cutoffDate), 'Última actualización: ' + updatedLabel()];
+      for (const type of TYPES) lines.push(TYPE_LABELS[type] + ': ' + number.format(Number(current[type + '-final'])) + ' − ' + number.format(Number(current[type + '-inicio'])) + ' = ' + number.format(result[type]));
+      lines.push('Total realizadas: ' + number.format(result.total), 'Tarifa: $10.000 por cada 40', 'Modalidad: ' + (result.mode === 'bloques' ? 'bloques completos' : 'proporcional ($250 por unidad)'));
+      if (result.mode === 'bloques') lines.push('Bloques completos: ' + number.format(result.blocks), 'Realizadas fuera del pago: ' + result.remainder);
+      lines.push('Pago total: ' + money(result.pay) + ' CLP', 'Ya pagado: ' + money(result.paid) + ' CLP', 'Saldo pendiente: ' + money(result.pending) + ' CLP');
+      if (result.overpaid > 0) lines.push('Pagado de más: ' + money(result.overpaid) + ' CLP');
+      lines.push('Guías hechas desde que empecé a hacer facturas: ' + number.format(result.laterGuides), 'Estas guías están incluidas en Guías al final, en el total y en el cálculo del pago.');
+      const text = lines.join('\n');
+      try { await navigator.clipboard.writeText(text); toast('Resumen copiado'); }
+      catch (_) { byId('copy-text').value = text; byId('copy-dialog').showModal(); byId('copy-text').focus(); byId('copy-text').select(); }
+    });
+    byId('close-copy').addEventListener('click', () => byId('copy-dialog').close());
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob), link = document.createElement('a');
+      link.href = url; link.download = filename; document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 15000);
+    }
+    byId('excel-button').addEventListener('click', () => {
+      if (!exportReady()) return;
+      try {
+        const excel = createExcel(values(), mode(), new Date(), lastUpdated);
+        downloadBlob(new Blob([excel.bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), excel.filename);
+        toast('Resumen Excel descargado');
+      } catch (_) { toast('No se pudo crear el Excel. Recarga la página e intenta nuevamente.'); }
+    });
+    byId('download').addEventListener('click', event => {
+      event.preventDefault();
+      if (!result.valid) { toast('Revisa los valores antes de descargar la copia.'); return; }
+      const copy = document.documentElement.cloneNode(true);
+      const backup = { guideTotalsVersion: 2, values: values(), mode: mode(), revision: dirty ? revision + 1 : revision, updatedAt: dirty ? new Date().toISOString() : lastUpdated };
+      copy.querySelector('#snapshot-data').textContent = JSON.stringify(backup).replaceAll('<', '<');
+      for (const id of ['editor-email','editor-password']) { copy.querySelector('#' + id).value = ''; copy.querySelector('#' + id).removeAttribute('value'); }
+      copy.querySelector('#login-error').textContent = '';
+      copy.querySelector('#access-error').textContent = ''; copy.querySelector('#access-error').hidden = true;
+      for (const dialog of copy.querySelectorAll('dialog')) dialog.removeAttribute('open');
+      copy.querySelector('#edit-fields').disabled = true; copy.querySelector('#add-stage-guide').disabled = true;
+      copy.querySelector('#save-button').hidden = copy.querySelector('#logout-button').hidden = true;
+      copy.querySelector('#login-button').hidden = false; copy.querySelector('#login-button').disabled = false;
+      copy.querySelector('#access-title').textContent = 'Modo consulta';
+      copy.querySelector('#access-hint').textContent = 'Inicia sesión con tu correo y contraseña para editar.';
+      copy.querySelector('#toast').classList.remove('show');
+      downloadBlob(new Blob(['<!doctype html>\n' + copy.outerHTML], { type: 'text/html;charset=utf-8' }), 'Cuenta_trabajos_respaldo-' + result.startDate + '_al_' + result.cutoffDate + '.html');
+      toast('Copia de respaldo descargada.');
+    });
+
+    // Conexión con Firebase: carga los datos de la nube y los mantiene al día.
+    function handleAuth(user) {
+      currentUser = user;
+      canEdit = Boolean(user);
+      if (!user && dirty) discardChanges();
+      // Primera vez: si la nube aún no tiene registro, se ofrece subir lo que hay en pantalla.
+      if (user && loaded && !remoteExists) dirty = true;
+      render();
+    }
+    function handleSnapshot(snap) {
+      loaded = true;
+      if (!snap.exists()) {
+        remoteExists = false;
+        if (canEdit) dirty = true;
+        render(); return;
+      }
+      const record = normalizeRecord(snap.data());
+      remoteExists = true;
+      if (!validRecord(record)) { if (Number.isSafeInteger(record?.revision)) revision = record.revision; showError('El registro guardado en la nube tiene datos inválidos. Corrígelos y vuelve a guardar.'); render(); return; }
+      remoteRecord = record;
+      if (!dirty) acceptRecord(record);
+      else if (!saving && record.revision !== revision) showError('Se guardaron cambios desde otro dispositivo mientras editabas. Recarga la página para ver la última versión.');
+      render();
+    }
+    async function connectFirebase() {
+      try {
+        const base = 'https://www.gstatic.com/firebasejs/' + FIREBASE_VERSION + '/';
+        const [appModule, authModule, storeModule] = await Promise.all([import(base + 'firebase-app.js'), import(base + 'firebase-auth.js'), import(base + 'firebase-firestore.js')]);
+        const app = appModule.initializeApp(FIREBASE_CONFIG);
+        const db = storeModule.getFirestore(app);
+        fb = { auth: authModule, authInstance: authModule.getAuth(app), store: storeModule, db, ref: storeModule.doc(db, 'cuenta', 'registro') };
+        authModule.onAuthStateChanged(fb.authInstance, handleAuth);
+        storeModule.onSnapshot(fb.ref, handleSnapshot, error => { showError(firebaseMessage(error, 'No se pudieron cargar los datos de la nube.')); render(); });
+        render();
+      } catch (_) {
+        showError('No se pudo conectar con la nube. Revisa tu conexión y recarga la página.');
+        render();
+      }
+    }
+
+    const today = chileDateParts();
+    byId('from-date').value = byId('cutoff-date').value = today.year + '-' + today.month + '-' + today.day;
+    initialRecord = { guideTotalsVersion: 2, values: values(), mode: mode(), revision: 0, updatedAt: null };
+    // Mientras carga la nube se muestran los datos que hubiera en este navegador o en la copia.
+    let snapshot = null, stored = null;
+    try { snapshot = normalizeRecord(JSON.parse(byId('snapshot-data').textContent)); } catch (_) {}
+    try { stored = normalizeRecord(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch (_) {}
+    if (!validRecord(snapshot)) snapshot = null;
+    if (!validRecord(stored)) stored = null;
+    if (!stored && !snapshot) {
+      try {
+        const legacy = withNewCounters(JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY)));
+        if (legacy?.values) { if (!legacy.values['from-date']) legacy.values['from-date'] = legacy.values['cutoff-date']; if (validRecord(normalizeRecord(legacy))) stored = normalizeRecord(legacy); }
+      } catch (_) {}
+    }
+    const savedTime = Date.parse(stored?.updatedAt) || 0, snapshotTime = Date.parse(snapshot?.updatedAt) || 0;
+    const record = stored && (!snapshot || savedTime >= snapshotTime) ? stored : snapshot;
+    acceptRecord(record || initialRecord);
+    render();
+    connectFirebase();
+  </script>
+</body>
+</html>
